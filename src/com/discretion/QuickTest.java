@@ -24,7 +24,7 @@ public class QuickTest {
         // The sub-proof: if x is in X, then x is in Y, so x is in Z
         Variable x = new Variable("x");
         LinkedList<Statement> subSuppositions = new LinkedList<>();
-        subSuppositions.add(new ElementOf(x, setY));
+        subSuppositions.add(new ElementOf(x, setX));
         LinkedList<ProofItem> subStatements = new LinkedList<>();
         subStatements.add(new ProofStatement(
                 new ElementOf(x, setY)
