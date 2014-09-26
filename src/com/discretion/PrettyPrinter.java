@@ -1,5 +1,8 @@
 package com.discretion;
 
+import com.discretion.expression.SetDifference;
+import com.discretion.expression.SetIntersection;
+import com.discretion.expression.SetUnion;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.SubsetOf;
 
@@ -49,6 +52,24 @@ public class PrettyPrinter implements MathObjectVisitor {
         elem.subset.accept(this);
         pretty += " \u2286 ";
         elem.set.accept(this);
+    }
+
+    public void visit(SetUnion union) {
+        union.setA.accept(this);
+        pretty += " \u222A ";
+        union.setB.accept(this);
+    }
+
+    public void visit(SetIntersection intersection) {
+        intersection.setA.accept(this);
+        pretty += " \u2229 ";
+        intersection.setB.accept(this);
+    }
+
+    public void visit(SetDifference difference) {
+        difference.setA.accept(this);
+        pretty += " - ";
+        difference.setB.accept(this);
     }
 
     String pretty;
