@@ -11,7 +11,7 @@ Suppose X ⊆ Y and Y ⊆ Z.
 Further suppose x ∈ X.
   x ∈ Y
 So x ∈ Z.
-Therefore X ⊆ Y.
+Therefore X ⊆ Z.
 ```
 
 
