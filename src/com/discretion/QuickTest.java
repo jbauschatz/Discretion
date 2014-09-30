@@ -1,9 +1,13 @@
 package com.discretion;
 
+import com.discretion.expression.SetUnion;
 import com.discretion.proof.Proof;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.ProofStatement;
+import com.discretion.solver.PartialSolver;
+import com.discretion.solver.Solver;
 import com.discretion.statement.ElementOf;
+import com.discretion.statement.Equality;
 import com.discretion.statement.Statement;
 import com.discretion.statement.SubsetOf;
 
@@ -37,6 +41,26 @@ public class QuickTest {
         Statement conclusion = new SubsetOf(setX, setZ);
 
         Proof proof = new Proof(supps, statements, conclusion);
+
+        System.out.println("***Pretty print a proof**\n");
         printer.prettyPrint(proof);
+
+        System.out.println("\n***Try to solve a proof**");
+        Solver solver = new PartialSolver();
+        Proof partialProof = solver.solve(conclusion, supps);
+        printer.prettyPrint(partialProof);
+
+
+        System.out.println("\n***Try to solve a proof**");
+        supps = new LinkedList<>();
+        supps.add(new SubsetOf(new Variable("A"), new Variable("U")));
+        supps.add(new SubsetOf(new Variable("B"), new Variable("U")));
+        supps.add(new SubsetOf(new Variable("C"), new Variable("U")));
+        conclusion = new Equality(
+                new SetUnion(new Variable("A"), new SetUnion(new Variable("B"), new Variable("C"))),
+                new SetUnion(new SetUnion(new Variable("A"), new Variable("B")), new Variable("C"))
+        );
+        partialProof = solver.solve(conclusion, supps);
+        printer.prettyPrint(partialProof);
     }
 }
