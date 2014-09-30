@@ -6,6 +6,7 @@ import com.discretion.proof.ProofStatement;
 import com.discretion.proof.UnknownSteps;
 import com.discretion.solver.inference.ElementOfSuperset;
 import com.discretion.solver.inference.InferenceProducer;
+import com.discretion.solver.inference.UnionDisjunction;
 import com.discretion.solver.structure.ProofStructureProducer;
 import com.discretion.solver.structure.SetEqualityStructure;
 import com.discretion.solver.structure.SubsetStructure;
@@ -31,6 +32,7 @@ public class PartialSolver implements Solver {
 
         inferences = new LinkedList<>();
         inferences.add(new ElementOfSuperset());
+        inferences.add(new UnionDisjunction());
     }
 
     private List<ProofItem> getStructure(Statement conclusion, TruthEnvironment environment) {
@@ -77,29 +79,21 @@ public class PartialSolver implements Solver {
         do {
             stillInfering = false;
             for (InferenceProducer inference : inferences) {
-                for (Statement newTruth : inference.getInferences(environment)) {
+                for (ProofStatement newTruth : inference.getInferences(environment)) {
                     // If we can successfully infer the conclusion, our job here is done
-                    if (newTruth.equals(conclusion))
+                    if (newTruth.getStatement().equals(conclusion))
                         return statements;
 
-                    if (environment.addTruth(newTruth)) {
+                    if (environment.addTruth(newTruth.getStatement())) {
                         stillInfering = true;
-                        statements.add(new ProofStatement(newTruth));
+                        statements.add(newTruth);
                     }
                 }
             }
         } while (stillInfering);
 
-        for (InferenceProducer inference : inferences) {
-            for (Statement newTruth : inference.getInferences(environment)) {
-                // If we can successfully infer the conclusion, our job here is done
-                if (newTruth.equals(conclusion))
-                    return statements;
-
-                environment.addTruth(newTruth);
-                statements.add(new ProofStatement(newTruth));
-            }
-        }
+        // If we reach here, we couldn't infer the conclusion
+        statements.add(new UnknownSteps());
 
         return statements;
     }

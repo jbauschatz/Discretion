@@ -2,6 +2,7 @@ package com.discretion.solver.inference;
 
 import com.discretion.Variable;
 import com.discretion.expression.SetUnion;
+import com.discretion.proof.ProofStatement;
 import com.discretion.solver.TruthEnvironment;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.Statement;
@@ -21,7 +22,7 @@ public class InferenceTest {
         InferenceProducer infer = new ElementOfSuperset();
 
         // Knowing that X ⊆ Y and x ∈ X, we should infer that x ∈ Y
-        List<Statement> inferences = infer.getInferences(environment);
+        List<ProofStatement> inferences = infer.getInferences(environment);
         Assert.assertEquals("Only one inference", inferences.size(), 1);
 
         Statement targetInference = new ElementOf(new Variable("x"), new Variable("Y"));
