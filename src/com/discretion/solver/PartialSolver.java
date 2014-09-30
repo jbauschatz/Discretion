@@ -10,10 +10,24 @@ import java.util.List;
 
 public class PartialSolver implements Solver {
     public Proof solve(Statement conclusion, List<Statement> given) {
-        List<ProofItem> statements = new LinkedList<>();
+        for (ProofStructureProducer structure : structures) {
+            if (structure.applies(conclusion)) {
+                List<ProofItem> statements = structure.produceStructure(conclusion);
+                return new Proof(given, statements, conclusion);
+            }
+        }
 
+
+        List<ProofItem> statements = new LinkedList<>();
         statements.add(new UnknownSteps());
 
         return new Proof(given, statements, conclusion);
     }
+
+    public PartialSolver() {
+        structures = new LinkedList<>();
+        structures.add(new SetEqualityStructure());
+    }
+
+    private List<ProofStructureProducer> structures;
 }
