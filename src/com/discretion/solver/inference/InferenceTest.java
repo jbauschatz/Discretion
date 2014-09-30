@@ -1,0 +1,29 @@
+package com.discretion.solver.inference;
+
+import com.discretion.Variable;
+import com.discretion.solver.TruthEnvironment;
+import com.discretion.statement.ElementOf;
+import com.discretion.statement.Statement;
+import com.discretion.statement.SubsetOf;
+import junit.framework.Assert;
+import org.junit.Test;
+
+import java.util.List;
+
+public class InferenceTest {
+    @Test
+    public void testElementOfSuperset() {
+        TruthEnvironment environment = new TruthEnvironment();
+        environment.addTruth(new SubsetOf(new Variable("X"), new Variable("Y")));
+        environment.addTruth(new ElementOf(new Variable("x"), new Variable("X")));
+
+        Inference infer = new ElementOfSuperset();
+
+        // Knowing that X ⊆ Y and x ∈ X, we should infer that x ∈ Y
+        List<Statement> inferences = infer.getInferences(environment);
+        Assert.assertEquals("Only one inference", inferences.size(), 1);
+
+        Statement targetInference = new ElementOf(new Variable("x"), new Variable("Y"));
+        Assert.assertTrue("Infer that x is in Y", targetInference.equals(inferences.get(0)));
+    }
+}

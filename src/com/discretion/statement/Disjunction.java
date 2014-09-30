@@ -5,6 +5,13 @@ import com.discretion.MathObjectVisitor;
 
 public class Disjunction implements Statement {
 
+    public boolean equals(MathObject other) {
+        if (!(other instanceof Disjunction))
+            return false;
+        Disjunction otherDis = (Disjunction)other;
+        return left.equals(otherDis.left) && right.equals(otherDis.right);
+    }
+
     public MathObject getLeft() {
         return left;
     }

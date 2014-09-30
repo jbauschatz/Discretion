@@ -5,6 +5,13 @@ import com.discretion.MathObjectVisitor;
 
 public class SetComplement implements MathObject {
 
+    public boolean equals(MathObject other) {
+        if (!(other instanceof SetComplement))
+            return false;
+        SetComplement otherComp = (SetComplement)other;
+        return otherComp.set.equals(set);
+    }
+
     public MathObject getSet() {
         return set;
     }

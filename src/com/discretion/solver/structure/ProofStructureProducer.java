@@ -1,4 +1,4 @@
-package com.discretion.solver;
+package com.discretion.solver.structure;
 
 import com.discretion.proof.ProofItem;
 import com.discretion.statement.Statement;

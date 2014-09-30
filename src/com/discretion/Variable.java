@@ -2,6 +2,10 @@ package com.discretion;
 
 public class Variable implements MathObject {
 
+    public boolean equals(MathObject other) {
+        return other instanceof Variable && ((Variable)other).name.equals(name);
+    }
+
     public String getName() {
         return name;
     }

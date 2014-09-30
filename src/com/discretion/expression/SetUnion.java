@@ -5,6 +5,13 @@ import com.discretion.MathObjectVisitor;
 
 public class SetUnion implements MathObject {
 
+    public boolean equals(MathObject other) {
+        if (!(other instanceof SetUnion))
+            return false;
+        SetUnion otherUnion = (SetUnion)other;
+        return left.equals(otherUnion.left) && right.equals(otherUnion.right);
+    }
+
     public MathObject getLeft() {
         return left;
     }

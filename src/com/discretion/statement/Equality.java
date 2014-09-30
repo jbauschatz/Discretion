@@ -5,6 +5,13 @@ import com.discretion.MathObjectVisitor;
 
 public class Equality implements Statement {
 
+    public boolean equals(MathObject other) {
+        if (!(other instanceof Equality))
+            return false;
+        Equality otherEqual = (Equality)other;
+        return left.equals(otherEqual.left) && right.equals(otherEqual.right);
+    }
+
     public MathObject getLeft() {
         return left;
     }

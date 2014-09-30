@@ -1,8 +1,9 @@
-package com.discretion.solver;
+package com.discretion.solver.structure;
 
 import com.discretion.proof.Proof;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.UnknownSteps;
+import com.discretion.solver.structure.ProofStructureProducer;
 import com.discretion.statement.Equality;
 import com.discretion.statement.Statement;
 import com.discretion.statement.SubsetOf;
