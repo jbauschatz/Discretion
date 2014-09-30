@@ -6,6 +6,7 @@ public class ProofPrinter implements ProofItemVisitor {
 
     public void prettyPrint(Proof proof) {
         indentLevel = 0;
+        subProofsThisLevel = 0;
         System.out.println("Suppose " + printer.commaList(proof.getSuppositions()) + ".");
 
         for (ProofItem item : proof.getProofItems())
