@@ -1,10 +1,7 @@
 package com.discretion;
 
-import com.discretion.expression.SetDifference;
-import com.discretion.expression.SetIntersection;
-import com.discretion.expression.SetUnion;
-import com.discretion.statement.ElementOf;
-import com.discretion.statement.SubsetOf;
+import com.discretion.expression.*;
+import com.discretion.statement.*;
 
 import java.util.List;
 
@@ -34,42 +31,85 @@ public class PrettyPrinter implements MathObjectVisitor {
         for (int i = 0; i<objects.size()-1; ++i)
             list += prettyString(objects.get(i)) + ", ";
 
-        list += " and " + prettyString(objects.get(objects.size()-1));
+        list += "and " + prettyString(objects.get(objects.size()-1));
         return list;
     }
 
     public void visit(Variable variable) {
-        pretty += variable.name;
+        pretty += variable.getName();
     }
 
     public void visit(ElementOf elem) {
-        elem.element.accept(this);
+        elem.getElement().accept(this);
         pretty += " \u2208 ";
-        elem.set.accept(this);
+        elem.getSet().accept(this);
+    }
+
+    public void visit(Equality elem) {
+        elem.getLeft().accept(this);
+        pretty += " = ";
+        elem.getRight().accept(this);
     }
 
     public void visit(SubsetOf elem) {
-        elem.subset.accept(this);
+        elem.getSubset().accept(this);
         pretty += " \u2286 ";
-        elem.set.accept(this);
+        elem.getSet().accept(this);
     }
 
     public void visit(SetUnion union) {
-        union.setA.accept(this);
+        parensIfNeeded(union.getLeft());
         pretty += " \u222A ";
-        union.setB.accept(this);
+        parensIfNeeded(union.getRight());
     }
 
     public void visit(SetIntersection intersection) {
-        intersection.setA.accept(this);
-        pretty += " \u2229 ";
-        intersection.setB.accept(this);
+        parensIfNeeded(intersection.getLeft());
+        pretty += " ∩ ";
+        parensIfNeeded(intersection.getRight());
     }
 
     public void visit(SetDifference difference) {
-        difference.setA.accept(this);
+        parensIfNeeded(difference.getLeft());
         pretty += " - ";
-        difference.setB.accept(this);
+        parensIfNeeded(difference.getRight());
+    }
+
+    public void visit(SetComplement complement) {
+        pretty += "~";
+        parens(complement.getSet());
+    }
+
+    public void visit(Conjunction conjunction) {
+        parensIfNeeded(conjunction.getLeft());
+        pretty += " \u2227 ";
+        parensIfNeeded(conjunction.getRight());
+    }
+
+    public void visit(Disjunction disjunction) {
+        parensIfNeeded(disjunction.getLeft());
+        pretty += " \u2228 ";
+        parensIfNeeded(disjunction.getRight());
+    }
+
+    public void visit(Negation negation) {
+        pretty += "~";
+        parens(negation.getTerm());
+    }
+
+    private void parensIfNeeded(MathObject object) {
+        boolean paren = !(object instanceof Variable || object instanceof ElementOf);
+        if (paren)
+            pretty += "(";
+        object.accept(this);
+        if (paren)
+            pretty += ")";
+    }
+
+    private void parens(MathObject object) {
+        pretty += "(";
+        object.accept(this);
+        pretty += ")";
     }
 
     String pretty;

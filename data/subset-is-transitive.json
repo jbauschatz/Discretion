@@ -1,0 +1,83 @@
+{
+    "type": ".Proof",
+    "suppositions": [
+        {
+            "type": ".SubsetOf",
+            "subset": {
+                "type": ".Variable",
+                "name": "X"
+            },
+            "set": {
+                "type": ".Variable",
+                "name": "Y"
+            }
+        },
+        {
+            "type": ".SubsetOf",
+            "subset": {
+                "type": ".Variable",
+                "name": "Y"
+            },
+            "set": {
+                "type": ".Variable",
+                "name": "Z"
+            }
+        }
+    ],
+    "conclusion": {
+        "type": ".SubsetOf",
+        "subset": {
+            "type": ".Variable",
+            "name": "X"
+        },
+        "set": {
+            "type": ".Variable",
+            "name": "Z"
+        }
+    },
+    "proofItems": [
+        {
+            "type": ".Proof",
+            "suppositions": [
+                {
+                    "type": ".ElementOf",
+                    "element": {
+                        "type": ".Variable",
+                        "name": "x"
+                    },
+                    "set": {
+                        "type": ".Variable",
+                        "name": "X"
+                    }
+                }
+            ],
+            "conclusion": {
+                "type": ".ElementOf",
+                "element": {
+                    "type": ".Variable",
+                    "name": "x"
+                },
+                "set": {
+                    "type": ".Variable",
+                    "name": "Z"
+                }
+            },
+            "proofItems": [
+                {
+                    "type": ".ProofStatement",
+                    "statement": {
+                        "type": ".ElementOf",
+                        "element": {
+                            "type": ".Variable",
+                            "name": "x"
+                        },
+                        "set": {
+                            "type": ".Variable",
+                            "name": "Y"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

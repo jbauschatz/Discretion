@@ -5,15 +5,31 @@ import com.discretion.MathObjectVisitor;
 
 public class SetDifference implements MathObject {
 
-    public final MathObject setA;
-    public final MathObject setB;
+    public MathObject getLeft() {
+        return left;
+    }
+
+    public void setLeft(MathObject left) {
+        this.left = left;
+    }
+
+    public MathObject getRight() {
+        return right;
+    }
+
+    public void setRight(MathObject right) {
+        this.right = right;
+    }
 
     public void accept(MathObjectVisitor visitor) {
         visitor.visit(this);
     }
 
-    public SetDifference(MathObject setA, MathObject setB) {
-        this.setA = setA;
-        this.setB = setB;
+    public SetDifference(MathObject left, MathObject right) {
+        this.left = left;
+        this.right = right;
     }
+
+    private MathObject left;
+    private MathObject right;
 }

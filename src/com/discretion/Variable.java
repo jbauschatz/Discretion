@@ -1,7 +1,14 @@
 package com.discretion;
 
 public class Variable implements MathObject {
-    public final String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public void accept(MathObjectVisitor visitor) {
         visitor.visit(this);
@@ -11,4 +18,8 @@ public class Variable implements MathObject {
         this.name = name;
     }
 
+    public Variable() {
+    }
+
+    private String name;
 }

@@ -5,15 +5,34 @@ import com.discretion.MathObjectVisitor;
 
 public class SetIntersection implements MathObject {
 
-    public final MathObject setA;
-    public final MathObject setB;
+    public MathObject getLeft() {
+        return left;
+    }
+
+    public void setLeft(MathObject left) {
+        this.left = left;
+    }
+
+    public MathObject getRight() {
+        return right;
+    }
+
+    public void setRight(MathObject right) {
+        this.right = right;
+    }
 
     public void accept(MathObjectVisitor visitor) {
         visitor.visit(this);
     }
 
-    public SetIntersection(MathObject setA, MathObject setB) {
-        this.setA = setA;
-        this.setB = setB;
+    public SetIntersection(MathObject left, MathObject right) {
+        this.left = left;
+        this.right = right;
     }
+
+    public SetIntersection() {
+    }
+
+    private MathObject left;
+    private MathObject right;
 }

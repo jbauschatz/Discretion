@@ -9,22 +9,22 @@ public class ProofPrinter implements ProofItemVisitor {
 
     public void prettyPrint(Proof proof) {
         indentLevel = 0;
-        System.out.println("Suppose " + printer.commaList(proof.suppositions) + ".");
+        System.out.println("Suppose " + printer.commaList(proof.getSuppositions()) + ".");
 
-        for (ProofItem item : proof.proof)
+        for (ProofItem item : proof.getProofItems())
             item.accept(this);
 
-        System.out.println("Therefore " + printer.prettyString(proof.conclusion) + ".");
+        System.out.println("Therefore " + printer.prettyString(proof.getConclusion()) + ".");
     }
 
     public void visit(Proof proof) {
         // This is a sub proof nested at some level
-        indent("Further suppose " + printer.commaList(proof.suppositions) + ".");
+        indent("Further suppose " + printer.commaList(proof.getSuppositions()) + ".");
 
         ++indentLevel;
 
         // Print the body of the sub-proof
-        for (ProofItem item : proof.proof)
+        for (ProofItem item : proof.getProofItems())
             item.accept(this);
 
         // This puts the conclusion back on the parent indent level, which seems correct
@@ -32,11 +32,11 @@ public class ProofPrinter implements ProofItemVisitor {
 
         // Print the conclusion of the sub-proof
         // This is a sub-proof so we use something less strong than "therefore"
-        indent("So " + printer.prettyString(proof.conclusion) + ".");
+        indent("So " + printer.prettyString(proof.getConclusion()) + ".");
     }
 
     public void visit(ProofStatement statement) {
-        indent(printer.prettyString(statement.statement));
+        indent(printer.prettyString(statement.getStatement()));
     }
 
     public ProofPrinter(PrettyPrinter printer) {

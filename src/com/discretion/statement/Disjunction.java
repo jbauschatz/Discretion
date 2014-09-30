@@ -1,9 +1,9 @@
-package com.discretion.expression;
+package com.discretion.statement;
 
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
 
-public class SetUnion implements MathObject {
+public class Disjunction implements Statement {
 
     public MathObject getLeft() {
         return left;
@@ -25,12 +25,12 @@ public class SetUnion implements MathObject {
         visitor.visit(this);
     }
 
-    public SetUnion(MathObject left, MathObject right) {
+    public Disjunction(MathObject left, MathObject right) {
         this.left = left;
         this.right = right;
     }
 
-    public SetUnion() {
+    public Disjunction() {
     }
 
     private MathObject left;

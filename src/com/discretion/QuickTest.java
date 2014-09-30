@@ -34,7 +34,7 @@ public class QuickTest {
 
         LinkedList<ProofItem> statements = new LinkedList<>();
         statements.add(subProof);
-        Statement conclusion = new SubsetOf(setX, setY);
+        Statement conclusion = new SubsetOf(setX, setZ);
 
         Proof proof = new Proof(supps, statements, conclusion);
         printer.prettyPrint(proof);

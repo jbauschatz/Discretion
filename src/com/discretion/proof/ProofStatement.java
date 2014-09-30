@@ -4,7 +4,13 @@ import com.discretion.statement.Statement;
 
 public class ProofStatement implements ProofItem {
 
-    public final Statement statement;
+    public Statement getStatement() {
+        return statement;
+    }
+
+    public void setStatement(Statement statement) {
+        this.statement = statement;
+    }
 
     public void accept(ProofItemVisitor visitor) {
         visitor.visit(this);
@@ -13,4 +19,9 @@ public class ProofStatement implements ProofItem {
     public ProofStatement(Statement statement) {
         this.statement = statement;
     }
+
+    public ProofStatement() {
+    }
+
+    private Statement statement;
 }
