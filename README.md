@@ -4,22 +4,25 @@ Discretion
 A proof helper for discrete math
 
 ## Partial Credit
-One goal for this project is automated proof solving. Given a set of definitions, theorems, and suppositions, a proof could be worked out automatically. When this is not possible the program should flesh out the broad structure of a potential solution, aiming for "partial credit" for the problem.
+One goal for this project is automated proof solving. Discretion can flesh out the broad structure of a potential solution, aiming for as much "partial credit" for the problem as possible.
 
 ```
 Suppose A, B, and C are sets. Show that A ∪ (B ∪ C) = (A ∪ B) ∪ C.
 Proof:
-Further suppose x ∈ A ∪ (B ∪ C).
-  ???
-  x ∈ (A ∪ B) ∪ C
-So A ∪ (B ∪ C) ⊆ (A ∪ B) ∪ C.
-Now suppose x ∈ (A ∪ B) ∪ C.
-  ???
-  x ∈ A ∪ (B ∪ C)
+Suppose A ⊆ U, B ⊆ U, and C ⊆ U.
+Further suppose A ∪ (B ∪ C) ⊆ (A ∪ B) ∪ C.
+  Further suppose x ∈ (A ∪ B) ∪ C.
+    ???
+  So x ∈ A ∪ (B ∪ C).
 So (A ∪ B) ∪ C ⊆ A ∪ (B ∪ C).
+Now suppose (A ∪ B) ∪ C ⊆ A ∪ (B ∪ C).
+  Further suppose x ∈ A ∪ (B ∪ C).
+    ???
+  So x ∈ (A ∪ B) ∪ C.
+So A ∪ (B ∪ C) ⊆ (A ∪ B) ∪ C.
 Therefore A ∪ (B ∪ C) = (A ∪ B) ∪ C.
 ```
-The proof above could easily be constructed by knowing the nature of a set-equality proof, and setting up the two halfs of the proof accordingly. Each subset proof begins and ends according to the definition of subset, so that much is obvious as well. The program may not be able to apply the definition of union and disjunction to complete the proof, but the structure is there.
+The partial proof is constructed with knowledge that a set equality proof consists of two subset proofs. Each these subset proofs is structured according to the definition of subset. In this example the Solver has stopped short without the insight to complete the subset proofs in detail.
 
 ## Pretty Printing
 Displays a proof in a logical and nested manner like this:
