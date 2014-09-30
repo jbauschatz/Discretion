@@ -77,7 +77,7 @@ public class PrettyPrinter implements MathObjectVisitor {
 
     public void visit(SetComplement complement) {
         pretty += "~";
-        parens(complement.getSet());
+        parensIfNeeded(complement.getSet());
     }
 
     public void visit(Conjunction conjunction) {
@@ -94,11 +94,11 @@ public class PrettyPrinter implements MathObjectVisitor {
 
     public void visit(Negation negation) {
         pretty += "~";
-        parens(negation.getTerm());
+        parensIfNeeded(negation.getTerm());
     }
 
     private void parensIfNeeded(MathObject object) {
-        boolean paren = !(object instanceof Variable || object instanceof ElementOf);
+        boolean paren = !(object instanceof Variable || object instanceof ElementOf || object instanceof SetComplement);
         if (paren)
             pretty += "(";
         object.accept(this);

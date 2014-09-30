@@ -30,6 +30,9 @@ public class SetDifference implements MathObject {
         this.right = right;
     }
 
+    public SetDifference() {
+    }
+
     private MathObject left;
     private MathObject right;
 }
