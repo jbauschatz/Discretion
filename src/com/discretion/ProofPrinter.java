@@ -1,9 +1,6 @@
 package com.discretion;
 
-import com.discretion.proof.Proof;
-import com.discretion.proof.ProofItem;
-import com.discretion.proof.ProofItemVisitor;
-import com.discretion.proof.ProofStatement;
+import com.discretion.proof.*;
 
 public class ProofPrinter implements ProofItemVisitor {
 
@@ -47,6 +44,10 @@ public class ProofPrinter implements ProofItemVisitor {
 
     public void visit(ProofStatement statement) {
         indent(printer.prettyString(statement.getStatement()));
+    }
+
+    public void visit(UnknownSteps unknown) {
+        indent("???");
     }
 
     public ProofPrinter(PrettyPrinter printer) {

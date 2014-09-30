@@ -3,6 +3,8 @@ package com.discretion;
 import com.discretion.proof.Proof;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.ProofStatement;
+import com.discretion.solver.PartialSolver;
+import com.discretion.solver.Solver;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.Statement;
 import com.discretion.statement.SubsetOf;
@@ -37,6 +39,13 @@ public class QuickTest {
         Statement conclusion = new SubsetOf(setX, setZ);
 
         Proof proof = new Proof(supps, statements, conclusion);
+
+        System.out.println("***Pretty print a proof**\n");
         printer.prettyPrint(proof);
+
+        System.out.println("\n***Try to solve a proof**");
+        Solver solver = new PartialSolver();
+        Proof partialProof = solver.solve(conclusion, supps);
+        printer.prettyPrint(partialProof);
     }
 }
