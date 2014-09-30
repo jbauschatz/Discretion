@@ -13,6 +13,24 @@ Further suppose x ∈ X.
 So x ∈ Z.
 Therefore X ⊆ Z.
 ```
-
+Or a more complicated example:
+```
+Suppose A ⊆ U, B ⊆ U, and C ⊆ U.
+Further suppose x ∈ A ∪ (B ∪ C).
+  x ∈ A ∨ x ∈ B ∪ C
+  x ∈ A ∨ (x ∈ B ∨ x ∈ C)
+  (x ∈ A ∨ x ∈ B) ∨ x ∈ C
+  x ∈ A ∪ B ∨ x ∈ C
+  x ∈ (A ∪ B) ∪ C
+So A ∪ (B ∪ C) ⊆ (A ∪ B) ∪ C.
+Further suppose x ∈ (A ∪ B) ∪ C.
+  x ∈ A ∪ B ∨ x ∈ C
+  (x ∈ A ∨ x ∈ B) ∨ x ∈ C
+  x ∈ A ∨ (x ∈ B ∨ x ∈ C)
+  x ∈ A ∨ x ∈ B ∪ C
+  x ∈ A ∪ (B ∪ C)
+So (A ∪ B) ∪ C ⊆ A ∪ (B ∪ C).
+Therefore A ∪ (B ∪ C) = (A ∪ B) ∪ C.
+```
 
 Sub-proofs introduce a level of indentation, and conslusory words like "so" and "therefore" increase readability.
