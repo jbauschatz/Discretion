@@ -19,13 +19,23 @@ public class ProofPrinter implements ProofItemVisitor {
 
     public void visit(Proof proof) {
         // This is a sub proof nested at some level
-        indent("Further suppose " + printer.commaList(proof.getSuppositions()) + ".");
+        if (subProofsThisLevel > 0)
+            indent("Now suppose " + printer.commaList(proof.getSuppositions()) + ".");
+        else
+            indent("Further suppose " + printer.commaList(proof.getSuppositions()) + ".");
 
         ++indentLevel;
+        ++subProofsThisLevel;
+
+        // Save the sub-proofs at this level before going deeper
+        int oldSubProofs = subProofsThisLevel;
+        subProofsThisLevel = 0;
 
         // Print the body of the sub-proof
         for (ProofItem item : proof.getProofItems())
             item.accept(this);
+
+        subProofsThisLevel = oldSubProofs;
 
         // This puts the conclusion back on the parent indent level, which seems correct
         --indentLevel;
@@ -51,4 +61,5 @@ public class ProofPrinter implements ProofItemVisitor {
 
     private PrettyPrinter printer;
     private int indentLevel;
+    private int subProofsThisLevel;
 }

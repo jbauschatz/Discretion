@@ -23,7 +23,7 @@ Further suppose x ∈ A ∪ (B ∪ C).
   x ∈ A ∪ B ∨ x ∈ C
   x ∈ (A ∪ B) ∪ C
 So A ∪ (B ∪ C) ⊆ (A ∪ B) ∪ C.
-Further suppose x ∈ (A ∪ B) ∪ C.
+Now suppose x ∈ (A ∪ B) ∪ C.
   x ∈ A ∪ B ∨ x ∈ C
   (x ∈ A ∨ x ∈ B) ∨ x ∈ C
   x ∈ A ∨ (x ∈ B ∨ x ∈ C)
