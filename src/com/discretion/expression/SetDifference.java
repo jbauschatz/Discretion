@@ -5,7 +5,7 @@ import com.discretion.MathObjectVisitor;
 
 public class SetDifference implements MathObject {
 
-    public boolean equals(MathObject other) {
+    public boolean equals(Object other) {
         if (!(other instanceof SetDifference))
             return false;
         SetDifference otherDiff = (SetDifference)other;

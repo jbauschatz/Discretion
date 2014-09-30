@@ -12,6 +12,5 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
         include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 public interface MathObject {
-    public boolean equals(MathObject other);
     public void accept(MathObjectVisitor visitor);
 }

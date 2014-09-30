@@ -1,6 +1,7 @@
 package com.discretion.solver.inference;
 
 import com.discretion.Variable;
+import com.discretion.expression.SetUnion;
 import com.discretion.solver.TruthEnvironment;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.Statement;
@@ -17,7 +18,7 @@ public class InferenceTest {
         environment.addTruth(new SubsetOf(new Variable("X"), new Variable("Y")));
         environment.addTruth(new ElementOf(new Variable("x"), new Variable("X")));
 
-        Inference infer = new ElementOfSuperset();
+        InferenceProducer infer = new ElementOfSuperset();
 
         // Knowing that X ⊆ Y and x ∈ X, we should infer that x ∈ Y
         List<Statement> inferences = infer.getInferences(environment);
@@ -25,5 +26,17 @@ public class InferenceTest {
 
         Statement targetInference = new ElementOf(new Variable("x"), new Variable("Y"));
         Assert.assertTrue("Infer that x is in Y", targetInference.equals(inferences.get(0)));
+
+        environment.addTruth(targetInference);
+        inferences = infer.getInferences(environment);
+        Assert.assertEquals("No duplicate inference", 1, inferences.size());
+
+        environment = new TruthEnvironment();
+        environment.addTruth(new SubsetOf(new SetUnion(new Variable("X"), new Variable("Y"))
+                , new SetUnion(new Variable("A"), new Variable("B"))));
+        environment.addTruth(new ElementOf(new Variable("x"), new SetUnion(new Variable("X"), new Variable("Y"))));
+        targetInference = new ElementOf(new Variable("x"), new SetUnion(new Variable("A"), new Variable("B")));
+        inferences = infer.getInferences(environment);
+        Assert.assertTrue("Complex sets", inferences.get(0).equals(targetInference));
     }
 }

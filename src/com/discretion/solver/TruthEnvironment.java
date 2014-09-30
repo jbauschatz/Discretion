@@ -25,7 +25,23 @@ public class TruthEnvironment {
             addTruth(truth);
     }
 
-    public void addTruth(Statement truth) {
+    public void removeTruths(List<Statement> truths) {
+        for (Statement truth : truths)
+            removeTruth(truth);
+    }
+
+    public boolean containsTruth(Statement truth) {
+        return truths.contains(truth);
+    }
+
+    /**
+     * Returns whether the new statement was added
+     * (false if it already existed)
+     */
+    public boolean addTruth(Statement truth) {
+        if (truths.contains(truth))
+            return false;
+
         truths.add(truth);
 
         Class<?> truthClass = truth.getClass();
@@ -33,6 +49,8 @@ public class TruthEnvironment {
             elementOfs.add((ElementOf)truth);
         if (truthClass == SubsetOf.class)
             subsetOfs.add((SubsetOf)truth);
+
+        return true;
     }
 
     public <O extends MathObject> List<? extends MathObject> getTruths(Class<O> mathClass) {

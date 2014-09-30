@@ -5,7 +5,7 @@ import com.discretion.MathObjectVisitor;
 
 public class Disjunction implements Statement {
 
-    public boolean equals(MathObject other) {
+    public boolean equals(Object other) {
         if (!(other instanceof Disjunction))
             return false;
         Disjunction otherDis = (Disjunction)other;

@@ -5,7 +5,6 @@ import com.discretion.Variable;
 import com.discretion.proof.Proof;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.UnknownSteps;
-import com.discretion.solver.structure.ProofStructureProducer;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.Statement;
 import com.discretion.statement.SubsetOf;

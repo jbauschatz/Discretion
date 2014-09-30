@@ -5,7 +5,7 @@ import com.discretion.MathObjectVisitor;
 
 public class SetIntersection implements MathObject {
 
-    public boolean equals(MathObject other) {
+    public boolean equals(Object other) {
         if (!(other instanceof SetIntersection))
             return false;
         SetIntersection otherIntersection = (SetIntersection)other;

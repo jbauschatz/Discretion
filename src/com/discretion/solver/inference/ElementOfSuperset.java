@@ -15,11 +15,11 @@ import java.util.List;
  * x elementOf X and X subsetOf Y
  * implies x elementOf Y
  */
-public class ElementOfSuperset implements Inference {
+public class ElementOfSuperset implements InferenceProducer {
     public List<Statement> getInferences(TruthEnvironment environment) {
         List<Statement> inferences = new LinkedList<>();
 
-        // Find any truths of the form "x element of X"
+        // Find any truths of the form "x elementOf X"
         List<ElementOf> elementOfs = (List<ElementOf>)environment.getTruths(ElementOf.class);
         for (ElementOf elementOf : elementOfs) {
             MathObject set = elementOf.getSet();

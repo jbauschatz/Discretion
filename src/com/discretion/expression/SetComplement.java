@@ -5,7 +5,7 @@ import com.discretion.MathObjectVisitor;
 
 public class SetComplement implements MathObject {
 
-    public boolean equals(MathObject other) {
+    public boolean equals(Object other) {
         if (!(other instanceof SetComplement))
             return false;
         SetComplement otherComp = (SetComplement)other;

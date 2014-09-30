@@ -1,8 +1,11 @@
 package com.discretion;
 
+import com.discretion.MathObject;
+import com.discretion.MathObjectVisitor;
+
 public class Variable implements MathObject {
 
-    public boolean equals(MathObject other) {
+    public boolean equals(Object other) {
         return other instanceof Variable && ((Variable)other).name.equals(name);
     }
 

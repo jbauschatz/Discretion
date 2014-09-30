@@ -5,6 +5,6 @@ import com.discretion.statement.Statement;
 
 import java.util.List;
 
-public interface Inference {
+public interface InferenceProducer {
     public List<Statement> getInferences(TruthEnvironment environment);
 }

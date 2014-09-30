@@ -5,7 +5,7 @@ import com.discretion.MathObjectVisitor;
 
 public class Conjunction implements Statement {
 
-    public boolean equals(MathObject other) {
+    public boolean equals(Object other) {
         if (!(other instanceof Conjunction))
             return false;
         Conjunction otherConj = (Conjunction)other;

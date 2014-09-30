@@ -1,12 +1,8 @@
 package com.discretion;
 
-import com.discretion.expression.SetComplement;
-import com.discretion.expression.SetDifference;
-import com.discretion.expression.SetIntersection;
-import com.discretion.expression.SetUnion;
+import com.discretion.expression.*;
 import com.discretion.parser.ProofParser;
 import com.discretion.solver.Problem;
-import com.discretion.statement.Equality;
 import com.discretion.statement.Statement;
 import com.discretion.statement.SubsetOf;
 

@@ -5,7 +5,7 @@ import com.discretion.MathObjectVisitor;
 
 public class Negation implements Statement {
 
-    public boolean equals(MathObject other) {
+    public boolean equals(Object other) {
         return other instanceof Negation
                 && term.equals(((Negation)other).term);
     }

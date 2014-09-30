@@ -5,7 +5,7 @@ import com.discretion.MathObjectVisitor;
 
 public class Equality implements Statement {
 
-    public boolean equals(MathObject other) {
+    public boolean equals(Object other) {
         if (!(other instanceof Equality))
             return false;
         Equality otherEqual = (Equality)other;

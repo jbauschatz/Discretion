@@ -5,7 +5,7 @@ import com.discretion.MathObjectVisitor;
 
 public class SubsetOf implements Statement {
 
-    public boolean equals(MathObject other) {
+    public boolean equals(Object other) {
         if (!(other instanceof SubsetOf))
             return false;
         SubsetOf otherSubset = (SubsetOf)other;
