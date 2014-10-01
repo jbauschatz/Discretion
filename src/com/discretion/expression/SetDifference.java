@@ -5,6 +5,13 @@ import com.discretion.MathObjectVisitor;
 
 public class SetDifference implements MathObject {
 
+    public boolean equals(Object other) {
+        if (!(other instanceof SetDifference))
+            return false;
+        SetDifference otherDiff = (SetDifference)other;
+        return left.equals(otherDiff.left) && right.equals(otherDiff.right);
+    }
+
     public MathObject getLeft() {
         return left;
     }

@@ -2,6 +2,7 @@ package com.discretion;
 
 import com.discretion.parser.ProofParser;
 import com.discretion.proof.Proof;
+import com.discretion.proof.ProofPrinter;
 
 import java.io.File;
 

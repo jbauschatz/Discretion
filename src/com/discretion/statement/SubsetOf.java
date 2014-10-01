@@ -5,6 +5,13 @@ import com.discretion.MathObjectVisitor;
 
 public class SubsetOf implements Statement {
 
+    public boolean equals(Object other) {
+        if (!(other instanceof SubsetOf))
+            return false;
+        SubsetOf otherSubset = (SubsetOf)other;
+        return set.equals(otherSubset.set) && subset.equals(otherSubset.subset);
+    }
+
     public MathObject getSubset() {
         return subset;
     }

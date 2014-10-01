@@ -1,5 +1,6 @@
-package com.discretion;
+package com.discretion.proof;
 
+import com.discretion.PrettyPrinter;
 import com.discretion.proof.*;
 
 public class ProofPrinter implements ProofItemVisitor {
@@ -7,7 +8,9 @@ public class ProofPrinter implements ProofItemVisitor {
     public void prettyPrint(Proof proof) {
         indentLevel = 0;
         subProofsThisLevel = 0;
-        System.out.println("Suppose " + printer.commaList(proof.getSuppositions()) + ".");
+
+        if (!proof.getSuppositions().isEmpty())
+            System.out.println("Suppose " + printer.commaList(proof.getSuppositions()) + ".");
 
         for (ProofItem item : proof.getProofItems())
             item.accept(this);
@@ -22,6 +25,7 @@ public class ProofPrinter implements ProofItemVisitor {
         else
             indent("Further suppose " + printer.commaList(proof.getSuppositions()) + ".");
 
+        // After printing the suppositions, indent the body of the proof
         ++indentLevel;
         ++subProofsThisLevel;
 
@@ -44,7 +48,10 @@ public class ProofPrinter implements ProofItemVisitor {
     }
 
     public void visit(ProofStatement statement) {
-        indent(printer.prettyString(statement.getStatement()));
+        if (statement.getReason() != null)
+            indent(printer.prettyString(statement.getStatement()) + " " + statement.getReason() + ".");
+        else
+            indent(printer.prettyString(statement.getStatement()));
     }
 
     public void visit(UnknownSteps unknown) {

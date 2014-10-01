@@ -5,6 +5,13 @@ import com.discretion.MathObjectVisitor;
 
 public class ElementOf implements Statement {
 
+    public boolean equals(Object other) {
+        if (!(other instanceof ElementOf))
+            return false;
+        ElementOf otherElement = (ElementOf)other;
+        return element.equals(otherElement.element) && set.equals(otherElement.set);
+    }
+
     public MathObject getElement() {
         return element;
     }
