@@ -33,7 +33,23 @@ public class UnionDisjunction extends AbstractMathObjectVisitor implements Infer
 
     @Override
     protected void handle(Disjunction disjunction) {
-        // TODO - apply the definition synthetically - create a union from a disjunction
+        if (!(disjunction.getLeft() instanceof ElementOf))
+            return;
+        if (!(disjunction.getRight() instanceof ElementOf))
+            return;
+        ElementOf left = (ElementOf)disjunction.getLeft();
+        ElementOf right = (ElementOf)disjunction.getRight();
+
+        if (!left.getElement().equals(right.getElement()))
+            return;
+
+        ElementOf substitution = new ElementOf(left.getElement(),
+                new SetUnion(left.getSet(), right.getSet()));
+        inferences.add(new ProofStatement(
+                (Statement)
+                        replacer.substitute(originalStatement, disjunction, substitution),
+                "by the definition of union"
+        ));
     }
 
     @Override

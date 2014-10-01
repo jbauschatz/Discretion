@@ -66,6 +66,12 @@ public class PartialSolver implements Solver {
         // No further structure could be imposed on this problem, so we must build a chain of inferences
         List<ProofItem> statements = buildInferenceChain(conclusion, environment);
 
+        // Now clean those inferences out of the environment
+        for (ProofItem proofItem : statements) {
+            if (proofItem instanceof ProofStatement)
+                environment.removeTruth(((ProofStatement)proofItem).getStatement());
+        }
+
         // Might not have reached the conclusion
         if (statements.isEmpty())
             statements.add(new UnknownSteps());
