@@ -21,7 +21,7 @@ public class EnvironmentTest {
         Assert.assertTrue("Contains equal truth", environment.containsTruth(equalStatement));
 
         environment.addTruth(new ElementOf(new Variable("x"), new Variable("Y")));
-        List<ElementOf> elements = (List<ElementOf>)environment.getTruths(ElementOf.class);
+        List<Statement> elements = environment.getTruths();
         Assert.assertEquals("Typed accessor methods", 2, elements.size());
     }
 }

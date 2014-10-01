@@ -4,6 +4,7 @@ import com.discretion.proof.Proof;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.ProofStatement;
 import com.discretion.proof.UnknownSteps;
+import com.discretion.solver.inference.AssociateDisjunction;
 import com.discretion.solver.inference.ElementOfSuperset;
 import com.discretion.solver.inference.InferenceProducer;
 import com.discretion.solver.inference.UnionDisjunction;
@@ -33,6 +34,7 @@ public class PartialSolver implements Solver {
         inferences = new LinkedList<>();
         inferences.add(new ElementOfSuperset());
         inferences.add(new UnionDisjunction());
+        inferences.add(new AssociateDisjunction());
     }
 
     private List<ProofItem> getStructure(Statement conclusion, TruthEnvironment environment) {
@@ -48,8 +50,12 @@ public class PartialSolver implements Solver {
                         environment.addTruths(subproof.getSuppositions());
                         subproof.setProofItems(getStructure(subproof.getConclusion(), environment));
 
-                        // Leaving the sub-proof, so those assumptions are no longer "true"
+                        // After dealing with the sub-proof, clean out all its suppositions and inferences
                         environment.removeTruths(subproof.getSuppositions());
+                        for (ProofItem proofItem : subproof.getProofItems()) {
+                            if (item instanceof ProofStatement)
+                                environment.removeTruth(((ProofStatement)proofItem).getStatement());
+                        }
                     }
                 }
 

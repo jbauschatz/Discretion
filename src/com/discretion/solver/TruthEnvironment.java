@@ -62,10 +62,12 @@ public class TruthEnvironment {
         return null;
     }
 
+    public List<Statement> getTruths() {
+        return truths;
+    }
+
     public void removeTruth(Statement truth) {
         truths.remove(truth);
-
-        // TODO remove from the individual lists
     }
 
     public boolean hasContradiction() {

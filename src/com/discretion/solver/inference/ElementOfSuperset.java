@@ -4,6 +4,7 @@ import com.discretion.MathObject;
 import com.discretion.proof.ProofStatement;
 import com.discretion.solver.TruthEnvironment;
 import com.discretion.statement.ElementOf;
+import com.discretion.statement.Statement;
 import com.discretion.statement.SubsetOf;
 
 import java.util.LinkedList;

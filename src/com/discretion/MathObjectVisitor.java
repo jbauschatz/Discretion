@@ -6,8 +6,8 @@ import com.discretion.statement.*;
 public interface MathObjectVisitor {
     public void visit(Variable variable);
     public void visit(ElementOf elem);
-    public void visit(Equality elem);
-    public void visit(SubsetOf elem);
+    public void visit(Equality equality);
+    public void visit(SubsetOf subset);
     public void visit(SetUnion union);
     public void visit(SetIntersection intersection);
     public void visit(SetDifference difference);

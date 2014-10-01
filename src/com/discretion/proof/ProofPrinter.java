@@ -25,6 +25,7 @@ public class ProofPrinter implements ProofItemVisitor {
         else
             indent("Further suppose " + printer.commaList(proof.getSuppositions()) + ".");
 
+        // After printing the suppositions, indent the body of the proof
         ++indentLevel;
         ++subProofsThisLevel;
 
@@ -48,7 +49,7 @@ public class ProofPrinter implements ProofItemVisitor {
 
     public void visit(ProofStatement statement) {
         if (statement.getReason() != null)
-            indent(printer.prettyString(statement.getStatement()) + " " + statement.getReason());
+            indent(printer.prettyString(statement.getStatement()) + " " + statement.getReason() + ".");
         else
             indent(printer.prettyString(statement.getStatement()));
     }

@@ -1,5 +1,6 @@
 package com.discretion.solver.inference;
 
+import com.discretion.PrettyPrinter;
 import com.discretion.Variable;
 import com.discretion.expression.SetUnion;
 import com.discretion.proof.ProofStatement;
@@ -26,7 +27,7 @@ public class InferenceTest {
         Assert.assertEquals("Only one inference", inferences.size(), 1);
 
         Statement targetInference = new ElementOf(new Variable("x"), new Variable("Y"));
-        Assert.assertTrue("Infer that x is in Y", targetInference.equals(inferences.get(0)));
+        Assert.assertTrue("Infer that x is in Y", targetInference.equals(inferences.get(0).getStatement()));
 
         environment.addTruth(targetInference);
         inferences = infer.getInferences(environment);
@@ -38,6 +39,6 @@ public class InferenceTest {
         environment.addTruth(new ElementOf(new Variable("x"), new SetUnion(new Variable("X"), new Variable("Y"))));
         targetInference = new ElementOf(new Variable("x"), new SetUnion(new Variable("A"), new Variable("B")));
         inferences = infer.getInferences(environment);
-        Assert.assertTrue("Complex sets", inferences.get(0).equals(targetInference));
+        Assert.assertTrue("Complex sets", inferences.get(0).getStatement().equals(targetInference));
     }
 }
