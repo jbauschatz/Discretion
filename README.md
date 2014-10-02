@@ -7,19 +7,15 @@ A proof helper for discrete math
 One goal for this project is automated proof solving. Discretion can flesh out the broad structure of a potential solution, aiming for as much "partial credit" for the problem as possible.
 
 ```
-Suppose A, B, and C are sets. Show that A ∪ (B ∪ C) = (A ∪ B) ∪ C.
-Proof:
 Suppose A ⊆ U, B ⊆ U, and C ⊆ U.
-Further suppose A ∪ (B ∪ C) ⊆ (A ∪ B) ∪ C.
-  Further suppose x ∈ (A ∪ B) ∪ C.
-    ???
-  So x ∈ A ∪ (B ∪ C).
-So (A ∪ B) ∪ C ⊆ A ∪ (B ∪ C).
-Now suppose (A ∪ B) ∪ C ⊆ A ∪ (B ∪ C).
-  Further suppose x ∈ A ∪ (B ∪ C).
-    ???
-  So x ∈ (A ∪ B) ∪ C.
-So A ∪ (B ∪ C) ⊆ (A ∪ B) ∪ C.
+Further suppose x ∈ A ∪ (B ∪ C).
+  ???
+So x ∈ (A ∪ B) ∪ C.
+A ∪ (B ∪ C) ⊆ (A ∪ B) ∪ C by the definition of subset.
+Now suppose x ∈ (A ∪ B) ∪ C.
+  ???
+So x ∈ A ∪ (B ∪ C).
+(A ∪ B) ∪ C ⊆ A ∪ (B ∪ C) by the definition of subset.
 Therefore A ∪ (B ∪ C) = (A ∪ B) ∪ C.
 ```
 The partial proof is constructed with knowledge that a set equality proof consists of two subset proofs. Each these subset proofs is structured according to the definition of subset. In this example the Solver has stopped short without the insight to complete the subset proofs in detail.
