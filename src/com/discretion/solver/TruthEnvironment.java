@@ -66,8 +66,8 @@ public class TruthEnvironment {
         return truths;
     }
 
-    public void removeTruth(Statement truth) {
-        truths.remove(truth);
+    public boolean removeTruth(Statement truth) {
+        return truths.remove(truth);
     }
 
     public boolean hasContradiction() {

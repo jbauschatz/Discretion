@@ -12,36 +12,70 @@ import java.util.List;
 public class BestEffortInferenceChain implements InferenceChainProducer {
     public List<ProofItem> buildInferenceChain(Statement conclusion, TruthEnvironment environment) {
         List<ProofItem> statements = new LinkedList<>();
+        InferenceNode root = new InferenceNode();
+        expand(conclusion, root, environment);
 
-        boolean stillInfering = false;
-        do {
-            stillInfering = false;
-            for (InferenceProducer inference : inferences) {
-                for (ProofStatement newTruth : inference.getInferences(environment)) {
-                    // If we can successfully infer the conclusion, our job here is done
-                    if (newTruth.getStatement().equals(conclusion))
-                        return statements;
-
-                    if (environment.addTruth(newTruth.getStatement())) {
-                        stillInfering = true;
-                        statements.add(newTruth);
-                    }
-                }
+        if (root.reachesConclusion) {
+            InferenceNode current = root.successor;
+            while (current != null) {
+                statements.add(current.inference);
+                current = current.successor;
             }
-        } while (stillInfering);
-
-        // If we reach here, we couldn't infer the conclusion
-        statements.add(new UnknownSteps());
+        } else {
+            statements.add(new UnknownSteps());
+        }
 
         return statements;
     }
 
     public BestEffortInferenceChain() {
-        inferences = new LinkedList<>();
-        inferences.add(new ElementOfSuperset());
-        inferences.add(new UnionDisjunction());
-        inferences.add(new AssociateDisjunction());
+        inferenceProducers = new LinkedList<>();
+        inferenceProducers.add(new ElementOfSuperset());
+        inferenceProducers.add(new UnionDisjunction());
+        inferenceProducers.add(new AssociateDisjunction());
+        //inferenceProducers.add(new DeMorgansLaw());
     }
 
-    private List<InferenceProducer> inferences;
+    private List<ProofStatement> getImmediateInferences(TruthEnvironment environment) {
+        List<ProofStatement> inferences = new LinkedList<>();
+        for (InferenceProducer inference : inferenceProducers) {
+            for (ProofStatement newTruth : inference.getInferences(environment))
+                inferences.add(newTruth);
+        }
+        return inferences;
+    }
+
+    private void expand(Statement conclusion, InferenceNode node, TruthEnvironment environment) {
+        int bestDistance = Integer.MAX_VALUE-1;
+        InferenceNode bestChild = null;
+
+        for (ProofStatement statement : getImmediateInferences(environment)) {
+            if (!environment.containsTruth(statement.getStatement())) {
+                InferenceNode child = new InferenceNode();
+                child.inference = statement;
+
+                if (statement.getStatement().equals(conclusion)) {
+                    node.distanceToConclusion = 1;
+                    node.reachesConclusion = true;
+                    node.successor = child;
+                    return;
+                }
+
+                environment.addTruth(statement.getStatement());
+                expand(conclusion, child, environment);
+                environment.removeTruth(child.inference.getStatement());
+
+                if (child.reachesConclusion && child.distanceToConclusion < bestDistance) {
+                    bestChild = child;
+                    node.reachesConclusion = true;
+                    bestDistance = child.distanceToConclusion;
+                }
+            }
+        }
+
+        node.successor = bestChild;
+        node.distanceToConclusion = bestDistance + 1;
+    }
+
+    private List<InferenceProducer> inferenceProducers;
 }

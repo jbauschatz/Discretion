@@ -2,6 +2,7 @@ package com.discretion.statement;
 
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
+import com.discretion.Variable;
 
 public class ElementOf implements Statement {
 
@@ -35,6 +36,11 @@ public class ElementOf implements Statement {
     public ElementOf(MathObject element, MathObject set) {
         this.element = element;
         this.set = set;
+    }
+
+    public ElementOf(String element, String set) {
+        this.element = new Variable(element);
+        this.set = new Variable(set);
     }
 
     public ElementOf() {

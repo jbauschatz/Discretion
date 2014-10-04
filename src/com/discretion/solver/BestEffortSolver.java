@@ -20,6 +20,8 @@ public class BestEffortSolver implements Solver {
 
         List<ProofItem> statements = getStructure(conclusion, environment);
 
+        environment.removeTruths(given);
+
         return new Proof(given, statements, conclusion);
     }
 
@@ -65,10 +67,6 @@ public class BestEffortSolver implements Solver {
             if (proofItem instanceof ProofStatement)
                 environment.removeTruth(((ProofStatement)proofItem).getStatement());
         }
-
-        // Might not have reached the conclusion
-        if (statements.isEmpty())
-            statements.add(new UnknownSteps());
 
         return statements;
     }
