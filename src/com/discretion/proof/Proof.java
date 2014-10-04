@@ -22,11 +22,15 @@ public class Proof implements ProofItem {
         this.proof = proof;
     }
 
-    public Statement getConclusion() {
+    public ProofStatement getConclusion() {
         return conclusion;
     }
 
     public void setConclusion(Statement conclusion) {
+        this.conclusion = new ProofStatement(conclusion);
+    }
+
+    public void setConclusion(ProofStatement conclusion) {
         this.conclusion = conclusion;
     }
 
@@ -37,7 +41,7 @@ public class Proof implements ProofItem {
     public Proof(List<Statement> suppositions, List<ProofItem> proof, Statement conclusion) {
         this.suppositions = suppositions;
         this.proof = proof;
-        this.conclusion = conclusion;
+        this.conclusion = new ProofStatement(conclusion);
     }
 
     public Proof() {
@@ -47,5 +51,5 @@ public class Proof implements ProofItem {
 
     private List<Statement> suppositions;
     private List<ProofItem> proof;
-    private Statement conclusion;
+    private ProofStatement conclusion;
 }

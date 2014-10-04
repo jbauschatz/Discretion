@@ -41,10 +41,21 @@ public class BestEffortSolver implements Solver {
                 // Scan steps for sub-proofs, which may be partial and need fleshing out
                 for (ProofItem item : statements) {
                     if (item instanceof Proof) {
+                        // Try to recursively solve this sub-proof
                         Proof subproof = (Proof)item;
-                        // TODO is it safe to assume the sub-proof is incomplete?
                         environment.addTruths(subproof.getSuppositions());
-                        subproof.setProofItems(getStructure(subproof.getConclusion(), environment));
+                        List<ProofItem> substructure = getStructure(subproof.getConclusion().getStatement(), environment);
+
+                        // if the substructure reaches the conclusion, cut that out of the proof body (it is already in the conclusion)
+                        if (!substructure.isEmpty() && substructure.get(substructure.size()-1) instanceof ProofStatement) {
+                            ProofStatement lastSubStatement = (ProofStatement)substructure.get(substructure.size()-1);
+                            if (lastSubStatement.getStatement().equals(subproof.getConclusion().getStatement())) {
+                                subproof.getConclusion().setReason(lastSubStatement.getReason());
+                                substructure.remove(substructure.size()-1);
+                            }
+                        }
+
+                        subproof.setProofItems(substructure);
 
                         // After dealing with the sub-proof, clean out all its suppositions and inferences
                         environment.removeTruths(subproof.getSuppositions());
