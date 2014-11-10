@@ -102,7 +102,10 @@ public class Replacer implements MathObjectVisitor {
     }
 
     private MathObject copy(Conjunction conjunction) {
-        return new Conjunction(copyAndReplace(conjunction.getLeft()), copyAndReplace(conjunction.getRight()));
+        return new Conjunction(
+                (Statement)copyAndReplace(conjunction.getLeft()),
+                (Statement)copyAndReplace(conjunction.getRight())
+        );
     }
 
     private MathObject copy(Disjunction disjunction) {

@@ -1,5 +1,6 @@
 package com.discretion.solver.inference;
 
+import com.discretion.MathObject;
 import com.discretion.PrettyPrinter;
 import com.discretion.Variable;
 import com.discretion.expression.SetComplement;
@@ -183,7 +184,7 @@ public class InferenceTest {
         Assert.assertTrue("Complex sets", inferences.get(0).getStatement().equals(targetInference));
     }
 
-    private void assertStatementsEqual(String message, Statement statementA, Statement statementB) {
+    private void assertStatementsEqual(String message, MathObject statementA, MathObject statementB) {
         PrettyPrinter printer = new PrettyPrinter();
         Assert.assertEquals(message, printer.prettyString(statementA), printer.prettyString(statementB));
     }
