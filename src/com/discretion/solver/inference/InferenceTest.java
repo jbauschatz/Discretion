@@ -2,6 +2,7 @@ package com.discretion.solver.inference;
 
 import com.discretion.PrettyPrinter;
 import com.discretion.Variable;
+import com.discretion.expression.SetComplement;
 import com.discretion.expression.SetUnion;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.ProofStatement;
@@ -14,6 +15,26 @@ import org.junit.Test;
 import java.util.List;
 
 public class InferenceTest {
+
+    @Test
+    public void testComplement() {
+        SetComplementInference complement = new SetComplementInference();
+
+        ElementOf xInX = new ElementOf(new Variable("x"), new Variable("X"));
+        ElementOf xInXComp = new ElementOf(new Variable("x"), new SetComplement(new Variable("X")));
+        Negation xNotInX = new Negation(new ElementOf(new Variable("x"), new Variable("X")));
+        Negation xNotInXComp = new Negation(new ElementOf(new Variable("x"), new SetComplement(new Variable("X"))));
+
+        TruthEnvironment environment = new NestedTruthEnvironment(xInX);
+        List<ProofStatement> inferences = complement.getInferences(environment);
+        Assert.assertEquals("x in X -> x not in ~X", 1, inferences.size());
+        Assert.assertEquals("x in X -> x not in ~X", xNotInXComp, inferences.get(0).getStatement());
+
+        environment = new NestedTruthEnvironment(xInXComp);
+        inferences = complement.getInferences(environment);
+        Assert.assertEquals("x in ~X -> x not in X", 1, inferences.size());
+        Assert.assertEquals("x in ~X -> x not in X", xNotInX, inferences.get(0).getStatement());
+    }
 
     @Test
     public void testDeMorgans() {

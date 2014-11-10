@@ -10,7 +10,7 @@ import com.discretion.statement.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AssociateDisjunction extends AbstractMathObjectVisitor implements InferenceProducer{
+public class AssociateDisjunction extends AbstractMathObjectVisitor implements InferenceProducer {
     @Override
     public List<ProofStatement> getInferences(TruthEnvironment environment) {
         inferences = new LinkedList<>();

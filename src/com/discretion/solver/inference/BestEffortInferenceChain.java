@@ -54,13 +54,15 @@ public class BestEffortInferenceChain implements InferenceChainProducer {
     }
 
     public BestEffortInferenceChain() {
-        maxSearchDepth = 5;
+        maxSearchDepth = 6;
 
         inferenceProducers = new LinkedList<>();
         inferenceProducers.add(new ElementOfSuperset());
         inferenceProducers.add(new UnionDisjunction());
+        inferenceProducers.add(new IntersectionConjunction());
         inferenceProducers.add(new AssociateDisjunction());
         inferenceProducers.add(new DeMorgansLaw());
+        inferenceProducers.add(new SetComplementInference());
     }
 
     private List<ProofStatement> getImmediateInferences(TruthEnvironment environment) {
