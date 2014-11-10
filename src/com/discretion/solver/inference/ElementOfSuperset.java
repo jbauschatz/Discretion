@@ -2,9 +2,8 @@ package com.discretion.solver.inference;
 
 import com.discretion.MathObject;
 import com.discretion.proof.ProofStatement;
-import com.discretion.solver.TruthEnvironment;
+import com.discretion.solver.environment.TruthEnvironment;
 import com.discretion.statement.ElementOf;
-import com.discretion.statement.Statement;
 import com.discretion.statement.SubsetOf;
 
 import java.util.LinkedList;
@@ -21,11 +20,11 @@ public class ElementOfSuperset implements InferenceProducer {
         List<ProofStatement> inferences = new LinkedList<>();
 
         // Find any truths of the form "x elementOf X"
-        List<ElementOf> elementOfs = (List<ElementOf>)environment.getTruths(ElementOf.class);
+        List<ElementOf> elementOfs = environment.getTruths(ElementOf.class);
         for (ElementOf elementOf : elementOfs) {
             MathObject set = elementOf.getSet();
             // Find any subset truths whose subset matches this set
-            List<SubsetOf> subsetOfs = (List<SubsetOf>)environment.getTruths(SubsetOf.class);
+            List<SubsetOf> subsetOfs = environment.getTruths(SubsetOf.class);
             for (SubsetOf subsetOf : subsetOfs) {
                 if (subsetOf.getSubset().equals(set)) {
                     // We found a matching subset statement and can make an inference

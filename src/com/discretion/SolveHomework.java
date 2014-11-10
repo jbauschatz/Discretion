@@ -3,7 +3,7 @@ package com.discretion;
 import com.discretion.parser.ProofParser;
 import com.discretion.proof.Proof;
 import com.discretion.proof.ProofPrinter;
-import com.discretion.solver.PartialSolver;
+import com.discretion.solver.BestEffortSolver;
 import com.discretion.solver.Problem;
 import com.discretion.solver.Solver;
 
@@ -14,7 +14,7 @@ public class SolveHomework {
     public static void main(String... args) {
         File homework = new File("data/homework.json");
         List<Problem> problems = ProofParser.parseProblems(homework);
-        Solver solver = new PartialSolver();
+        Solver solver = new BestEffortSolver();
         ProofPrinter printer = new ProofPrinter(new PrettyPrinter());
 
         for (Problem p : problems) {

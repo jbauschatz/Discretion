@@ -15,7 +15,10 @@ public class ProofPrinter implements ProofItemVisitor {
         for (ProofItem item : proof.getProofItems())
             item.accept(this);
 
-        System.out.println("Therefore " + printer.prettyString(proof.getConclusion()) + ".");
+        System.out.print("Therefore " + printer.prettyString(proof.getConclusion().getStatement()));
+        if (proof.getConclusion().getReason() != null)
+            System.out.print(", " + proof.getConclusion().getReason());
+        System.out.println();
     }
 
     public void visit(Proof proof) {
@@ -44,7 +47,12 @@ public class ProofPrinter implements ProofItemVisitor {
 
         // Print the conclusion of the sub-proof
         // This is a sub-proof so we use something less strong than "therefore"
-        indent("So " + printer.prettyString(proof.getConclusion()) + ".");
+        if (proof.getConclusion().getReason() != null) {
+            indent("So " + printer.prettyString(proof.getConclusion().getStatement())
+                    + ", " + proof.getConclusion().getReason() + ".");
+        } else {
+            indent("So " + printer.prettyString(proof.getConclusion().getStatement()) + ".");
+        }
     }
 
     public void visit(ProofStatement statement) {

@@ -5,7 +5,7 @@ import com.discretion.MathObject;
 import com.discretion.expression.SetUnion;
 import com.discretion.proof.ProofStatement;
 import com.discretion.solver.Replacer;
-import com.discretion.solver.TruthEnvironment;
+import com.discretion.solver.environment.TruthEnvironment;
 import com.discretion.statement.Disjunction;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.Statement;
