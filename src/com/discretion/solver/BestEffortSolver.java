@@ -3,7 +3,8 @@ package com.discretion.solver;
 import com.discretion.proof.Proof;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.ProofStatement;
-import com.discretion.proof.UnknownSteps;
+import com.discretion.solver.environment.NestedTruthEnvironment;
+import com.discretion.solver.environment.TruthEnvironment;
 import com.discretion.solver.inference.*;
 import com.discretion.solver.structure.ProofStructureProducer;
 import com.discretion.solver.structure.SetEqualityStructure;
@@ -15,12 +16,9 @@ import java.util.List;
 
 public class BestEffortSolver implements Solver {
     public Proof solve(Statement conclusion, List<Statement> given) {
-        TruthEnvironment environment = new TruthEnvironment();
-        environment.addTruths(given);
+        TruthEnvironment environment = new NestedTruthEnvironment(given);
 
         List<ProofItem> statements = getStructure(conclusion, environment);
-
-        environment.removeTruths(given);
 
         return new Proof(given, statements, conclusion);
     }
@@ -43,8 +41,9 @@ public class BestEffortSolver implements Solver {
                     if (item instanceof Proof) {
                         // Try to recursively solve this sub-proof
                         Proof subproof = (Proof)item;
-                        environment.addTruths(subproof.getSuppositions());
-                        List<ProofItem> substructure = getStructure(subproof.getConclusion().getStatement(), environment);
+
+                        TruthEnvironment subroofEnvironment = environment.getChildEnvironment(subproof.getSuppositions());
+                        List<ProofItem> substructure = getStructure(subproof.getConclusion().getStatement(), subroofEnvironment);
 
                         // if the substructure reaches the conclusion, cut that out of the proof body (it is already in the conclusion)
                         if (!substructure.isEmpty() && substructure.get(substructure.size()-1) instanceof ProofStatement) {
@@ -56,13 +55,6 @@ public class BestEffortSolver implements Solver {
                         }
 
                         subproof.setProofItems(substructure);
-
-                        // After dealing with the sub-proof, clean out all its suppositions and inferences
-                        environment.removeTruths(subproof.getSuppositions());
-                        for (ProofItem proofItem : subproof.getProofItems()) {
-                            if (item instanceof ProofStatement)
-                                environment.removeTruth(((ProofStatement)proofItem).getStatement());
-                        }
                     }
                 }
 
@@ -72,12 +64,6 @@ public class BestEffortSolver implements Solver {
 
         // No further structure could be imposed on this problem, so we must build a chain of inferences
         List<ProofItem> statements = inference.buildInferenceChain(conclusion, environment);
-
-        // Now clean those inferences out of the environment
-        for (ProofItem proofItem : statements) {
-            if (proofItem instanceof ProofStatement)
-                environment.removeTruth(((ProofStatement)proofItem).getStatement());
-        }
 
         return statements;
     }

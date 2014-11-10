@@ -5,7 +5,8 @@ import com.discretion.Variable;
 import com.discretion.expression.SetUnion;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.ProofStatement;
-import com.discretion.solver.TruthEnvironment;
+import com.discretion.solver.environment.NestedTruthEnvironment;
+import com.discretion.solver.environment.TruthEnvironment;
 import com.discretion.statement.*;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -18,40 +19,39 @@ public class InferenceTest {
     public void testDeMorgans() {
         DeMorgansLaw morgan = new DeMorgansLaw();
 
-        TruthEnvironment environment = new TruthEnvironment();
-        environment.addTruth(new Conjunction(new Variable("p"), new Variable("q")));
+        TruthEnvironment environment = new NestedTruthEnvironment(new Conjunction(new Variable("p"), new Variable("q")));
         List<ProofStatement> inferences = morgan.getInferences(environment);
         Statement inference = new Negation(new Disjunction(new Negation(new Variable("p")), new Negation(new Variable("q"))));
         assertStatementsEqual("p and q -> ~(~p or ~q)",
                 inference,
                 inferences.get(0).getStatement());
 
-        environment = new TruthEnvironment();
-        environment.addTruth(new Conjunction(new Negation(new Variable("p")), new Negation(new Variable("q"))));
+        environment = new NestedTruthEnvironment(new Conjunction(new Negation(new Variable("p")), new Negation(new Variable("q"))));
         inferences = morgan.getInferences(environment);
         inference = new Negation(new Disjunction(new Variable("p"), new Variable("q")));
         assertStatementsEqual("~p and ~q -> ~(p or q)...shortcut inner double negative",
                 inference,
                 inferences.get(0).getStatement());
 
-        environment = new TruthEnvironment();
-        environment.addTruth(new Disjunction(new Negation(new Variable("p")), new Negation(new Variable("q"))));
+        environment = new NestedTruthEnvironment(new Disjunction(new Negation(new Variable("p")), new Negation(new Variable("q"))));
         inferences = morgan.getInferences(environment);
         inference = new Negation(new Conjunction(new Variable("p"), new Variable("q")));
         assertStatementsEqual("~p or ~q -> ~(p and q)...shortcut inner double negative",
                 inference,
                 inferences.get(0).getStatement());
 
-        environment = new TruthEnvironment();
-        environment.addTruth(new Negation(new Disjunction(new Negation(new Variable("p")), new Negation(new Variable("q")))));
+        environment = new NestedTruthEnvironment(
+                new Negation(new Disjunction(new Negation(new Variable("p")), new Negation(new Variable("q"))))
+        );
         inferences = morgan.getInferences(environment);
         inference = new Conjunction(new Variable("p"), new Variable("q"));
         assertStatementsEqual("~(~p or ~q) -> p and q...shortcut outer double negative",
                 inference,
                 inferences.get(0).getStatement());
 
-        environment = new TruthEnvironment();
-        environment.addTruth(new Negation(new Conjunction(new Negation(new Variable("p")), new Negation(new Variable("q")))));
+        environment = new NestedTruthEnvironment(
+                new Negation(new Conjunction(new Negation(new Variable("p")), new Negation(new Variable("q"))))
+        );
         inferences = morgan.getInferences(environment);
         inference = new Disjunction(new Variable("p"), new Variable("q"));
         assertStatementsEqual("~(~p and ~q) -> p or q...shortcut outer double negative",
@@ -62,9 +62,10 @@ public class InferenceTest {
     @Test
     public void testInferenceChains() {
         InferenceChainProducer chain = new BestEffortInferenceChain();
-        TruthEnvironment environment = new TruthEnvironment();
-        environment.addTruth(new SubsetOf(new Variable("X"), new Variable("Y")));
-        environment.addTruth(new ElementOf(new Variable("a"), new Variable("X")));
+        TruthEnvironment environment = new NestedTruthEnvironment(
+                new SubsetOf(new Variable("X"), new Variable("Y")),
+                new ElementOf(new Variable("a"), new Variable("X"))
+        );
 
         Statement conclusion = new ElementOf(new Variable("a"), new Variable("Y"));
 
@@ -76,8 +77,8 @@ public class InferenceTest {
         Assert.assertEquals("Environment not polluted", 2, environment.getTruths().size());
 
         // These suppositions do nothing to help reach the conclusion
-        environment.addTruth(new ElementOf(new Variable("x"), new Variable("RedHerringSet")));
-        environment.addTruth(new ElementOf(new Variable("redHerringElement"), new Variable("X")));
+        environment = environment.getChildEnvironment(new ElementOf(new Variable("x"), new Variable("RedHerringSet")));
+        environment = environment.getChildEnvironment(new ElementOf(new Variable("redHerringElement"), new Variable("X")));
         statements = chain.buildInferenceChain(conclusion, environment);
 
         Assert.assertEquals("Ignores irrelevent facts", 1, statements.size());
@@ -96,8 +97,7 @@ public class InferenceTest {
         ));
 
         // Assuming Left, we should conclude Right
-        environment = new TruthEnvironment();
-        environment.addTruth(leftParenthesized);
+        environment = new NestedTruthEnvironment(leftParenthesized);
 
         conclusion = new Disjunction(
                 new ElementOf(new Variable("x"), new SetUnion(new Variable("A"), new Variable("B"))),
@@ -133,9 +133,10 @@ public class InferenceTest {
 
     @Test
     public void testElementOfSuperset() {
-        TruthEnvironment environment = new TruthEnvironment();
-        environment.addTruth(new SubsetOf(new Variable("X"), new Variable("Y")));
-        environment.addTruth(new ElementOf(new Variable("x"), new Variable("X")));
+        TruthEnvironment environment = new NestedTruthEnvironment(
+                new SubsetOf(new Variable("X"), new Variable("Y")),
+                new ElementOf(new Variable("x"), new Variable("X"))
+        );
 
         InferenceProducer infer = new ElementOfSuperset();
 
@@ -146,14 +147,16 @@ public class InferenceTest {
         Statement targetInference = new ElementOf(new Variable("x"), new Variable("Y"));
         Assert.assertTrue("Infer that x is in Y", targetInference.equals(inferences.get(0).getStatement()));
 
-        environment.addTruth(targetInference);
+        environment = environment.getChildEnvironment(targetInference);
         inferences = infer.getInferences(environment);
         Assert.assertEquals("No duplicate inference", 1, inferences.size());
 
-        environment = new TruthEnvironment();
-        environment.addTruth(new SubsetOf(new SetUnion(new Variable("X"), new Variable("Y"))
-                , new SetUnion(new Variable("A"), new Variable("B"))));
-        environment.addTruth(new ElementOf(new Variable("x"), new SetUnion(new Variable("X"), new Variable("Y"))));
+        environment = new NestedTruthEnvironment(
+                new SubsetOf(
+                        new SetUnion(new Variable("X"), new Variable("Y")),
+                        new SetUnion(new Variable("A"), new Variable("B"))),
+                new ElementOf(new Variable("x"), new SetUnion(new Variable("X"), new Variable("Y")))
+        );
         targetInference = new ElementOf(new Variable("x"), new SetUnion(new Variable("A"), new Variable("B")));
         inferences = infer.getInferences(environment);
         Assert.assertTrue("Complex sets", inferences.get(0).getStatement().equals(targetInference));

@@ -1,11 +1,21 @@
 package com.discretion.solver.inference;
 
 import com.discretion.proof.ProofStatement;
+import com.discretion.solver.environment.TruthEnvironment;
 
 class InferenceNode {
+    /**
+     *
+     */
     ProofStatement inference;
-    InferenceNode successor;
 
-    int distanceToConclusion;
-    boolean reachesConclusion;
+    /**
+     *
+     */
+    TruthEnvironment environment;
+
+    /**
+     *
+     */
+    InferenceNode predecessor;
 }

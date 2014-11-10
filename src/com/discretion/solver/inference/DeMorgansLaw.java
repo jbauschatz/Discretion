@@ -4,7 +4,7 @@ import com.discretion.AbstractMathObjectVisitor;
 import com.discretion.MathObject;
 import com.discretion.proof.ProofStatement;
 import com.discretion.solver.Replacer;
-import com.discretion.solver.TruthEnvironment;
+import com.discretion.solver.environment.TruthEnvironment;
 import com.discretion.statement.Conjunction;
 import com.discretion.statement.Disjunction;
 import com.discretion.statement.Negation;
