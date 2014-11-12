@@ -17,8 +17,8 @@ public class ProofPrinter implements ProofItemVisitor {
 
         System.out.print("Therefore " + printer.prettyString(proof.getConclusion().getStatement()));
         if (proof.getConclusion().getReason() != null)
-            System.out.print(", " + proof.getConclusion().getReason());
-        System.out.println();
+            System.out.print(" " + proof.getConclusion().getReason());
+        System.out.println(", QED.");
     }
 
     public void visit(Proof proof) {

@@ -5,7 +5,6 @@ import com.discretion.proof.Proof;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.ProofStatement;
 import com.discretion.proof.UnknownSteps;
-import com.discretion.solver.structure.ProofStructureProducer;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.Equality;
 import com.discretion.statement.Statement;
@@ -19,8 +18,8 @@ public class SetEqualityStructure implements ProofStructureProducer {
         return statement instanceof Equality;
     }
 
-    public List<ProofItem> produceStructure(Statement statement) {
-        Equality equality = (Equality)statement;
+    public Proof produceStructure(List<Statement> suppositions, Statement conclusion) {
+        Equality equality = (Equality)conclusion;
 
         List<ProofItem> structure = new LinkedList<>();
 
@@ -38,6 +37,8 @@ public class SetEqualityStructure implements ProofStructureProducer {
         structure.add(subsetB);
         structure.add(new ProofStatement(new SubsetOf(equality.getRight(), equality.getLeft()), "by the definition of subset"));
 
-        return structure;
+		ProofStatement newConclusion = new ProofStatement(conclusion, "by the definition of set equality");
+
+        return new Proof(suppositions, structure, newConclusion);
     }
 }

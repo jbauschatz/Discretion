@@ -38,11 +38,17 @@ public class Proof implements ProofItem {
         visitor.visit(this);
     }
 
-    public Proof(List<Statement> suppositions, List<ProofItem> proof, Statement conclusion) {
-        this.suppositions = suppositions;
-        this.proof = proof;
-        this.conclusion = new ProofStatement(conclusion);
-    }
+	public Proof(List<Statement> suppositions, List<ProofItem> proof, Statement conclusion) {
+		this.suppositions = suppositions;
+		this.proof = proof;
+		this.conclusion = new ProofStatement(conclusion);
+	}
+
+	public Proof(List<Statement> suppositions, List<ProofItem> proof, ProofStatement conclusion) {
+		this.suppositions = suppositions;
+		this.proof = proof;
+		this.conclusion = conclusion;
+	}
 
     public Proof() {
         suppositions = new LinkedList<>();

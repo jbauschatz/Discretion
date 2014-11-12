@@ -25,7 +25,6 @@ public class BestEffortInferenceChain implements InferenceChainProducer {
                         // We've reached the conclusion, which means we can reconstruct the
                         // shortest inference chain
                         LinkedList<ProofItem> chain = new LinkedList<>();
-                        chain.add(statement);
                         InferenceNode predecessor = node;
                         while (predecessor != root) {
                             chain.addFirst(predecessor.inference);
