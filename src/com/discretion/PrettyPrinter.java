@@ -1,8 +1,17 @@
 package com.discretion;
 
-import com.discretion.expression.*;
-import com.discretion.statement.*;
+import com.discretion.expression.SetComplement;
+import com.discretion.expression.SetDifference;
+import com.discretion.expression.SetIntersection;
+import com.discretion.expression.SetUnion;
+import com.discretion.statement.Conjunction;
+import com.discretion.statement.Disjunction;
+import com.discretion.statement.ElementOf;
+import com.discretion.statement.Equality;
+import com.discretion.statement.Negation;
+import com.discretion.statement.SubsetOf;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class PrettyPrinter implements MathObjectVisitor {
@@ -58,47 +67,59 @@ public class PrettyPrinter implements MathObjectVisitor {
     }
 
     public void visit(SetUnion union) {
-        parensIfNeeded(union.getLeft());
+        parensIfNeeded(union, union.getLeft());
         pretty += " \u222A ";
-        parensIfNeeded(union.getRight());
+        parensIfNeeded(union, union.getRight());
     }
 
     public void visit(SetIntersection intersection) {
-        parensIfNeeded(intersection.getLeft());
+        parensIfNeeded(intersection, intersection.getLeft());
         pretty += " ∩ ";
-        parensIfNeeded(intersection.getRight());
+        parensIfNeeded(intersection, intersection.getRight());
     }
 
     public void visit(SetDifference difference) {
-        parensIfNeeded(difference.getLeft());
+        parensIfNeeded(difference, difference.getLeft());
         pretty += " - ";
-        parensIfNeeded(difference.getRight());
+        parensIfNeeded(difference, difference.getRight());
     }
 
     public void visit(SetComplement complement) {
         pretty += "~";
-        parensIfNeeded(complement.getSet());
+        parensIfNeeded(complement, complement.getSet());
     }
 
     public void visit(Conjunction conjunction) {
-        parensIfNeeded(conjunction.getLeft());
+        parensIfNeeded(conjunction, conjunction.getLeft());
         pretty += " \u2227 ";
-        parensIfNeeded(conjunction.getRight());
+        parensIfNeeded(conjunction, conjunction.getRight());
     }
 
     public void visit(Disjunction disjunction) {
-        parensIfNeeded(disjunction.getLeft());
+        parensIfNeeded(disjunction, disjunction.getLeft());
         pretty += " \u2228 ";
-        parensIfNeeded(disjunction.getRight());
+        parensIfNeeded(disjunction, disjunction.getRight());
     }
 
     public void visit(Negation negation) {
-        pretty += "~";
-        parensIfNeeded(negation.getTerm());
+        pretty += "¬";
+        parensIfNeeded(negation, negation.getTerm());
     }
 
-    private void parensIfNeeded(MathObject object) {
-        boolean paren = !(object instanceof Variable || object instanceof ElementOf || object instanceof SetComplement);
+	public PrettyPrinter() {
+		precedence = new LinkedList<>();
+		precedence.addFirst(Variable.class);
+		precedence.addFirst(Negation.class);
+		precedence.addFirst(SetComplement.class);
+		precedence.addFirst(SetIntersection.class);
+		precedence.addFirst(SetDifference.class);
+		precedence.addFirst(SetUnion.class);
+		precedence.addFirst(ElementOf.class);
+		precedence.addFirst(SubsetOf.class);
+	}
+
+    private void parensIfNeeded(MathObject parent, MathObject object) {
+        boolean paren = precedence(parent) >= precedence(object);
         if (paren)
             pretty += "(";
         object.accept(this);
@@ -106,11 +127,10 @@ public class PrettyPrinter implements MathObjectVisitor {
             pretty += ")";
     }
 
-    private void parens(MathObject object) {
-        pretty += "(";
-        object.accept(this);
-        pretty += ")";
-    }
+	private int precedence(MathObject object) {
+		return precedence.indexOf(object.getClass());
+	}
 
     String pretty;
+	private LinkedList<Class<?>> precedence;
 }

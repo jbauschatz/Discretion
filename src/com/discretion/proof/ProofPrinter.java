@@ -1,7 +1,6 @@
 package com.discretion.proof;
 
 import com.discretion.PrettyPrinter;
-import com.discretion.proof.*;
 
 public class ProofPrinter implements ProofItemVisitor {
 
