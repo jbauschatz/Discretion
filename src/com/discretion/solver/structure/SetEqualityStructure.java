@@ -5,6 +5,7 @@ import com.discretion.proof.Proof;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.ProofStatement;
 import com.discretion.proof.UnknownSteps;
+import com.discretion.solver.environment.TruthEnvironment;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.Equality;
 import com.discretion.statement.Statement;
@@ -18,22 +19,24 @@ public class SetEqualityStructure implements ProofStructureProducer {
         return statement instanceof Equality;
     }
 
-    public Proof produceStructure(List<Statement> suppositions, Statement conclusion) {
+    public Proof produceStructure(List<Statement> suppositions, Statement conclusion, TruthEnvironment environment) {
         Equality equality = (Equality)conclusion;
 
         List<ProofItem> structure = new LinkedList<>();
 
         Proof subsetA = new Proof();
-        subsetA.getSuppositions().add(new ElementOf(new Variable("x"), equality.getLeft()));
+		Variable elementA = environment.newElementName(equality.getLeft());
+        subsetA.getSuppositions().add(new ElementOf(elementA, equality.getLeft()));
         subsetA.getProofItems().add(new UnknownSteps());
-        subsetA.setConclusion(new ElementOf(new Variable("x"), equality.getRight()));
+        subsetA.setConclusion(new ElementOf(elementA, equality.getRight()));
         structure.add(subsetA);
         structure.add(new ProofStatement(new SubsetOf(equality.getLeft(), equality.getRight()), "by the definition of subset"));
 
         Proof subsetB = new Proof();
-        subsetB.getSuppositions().add(new ElementOf(new Variable("x"), equality.getRight()));
+		Variable elementB = environment.newElementName(equality.getRight());
+        subsetB.getSuppositions().add(new ElementOf(elementB, equality.getRight()));
         subsetB.getProofItems().add(new UnknownSteps());
-        subsetB.setConclusion(new ElementOf(new Variable("x"), equality.getLeft()));
+        subsetB.setConclusion(new ElementOf(elementB, equality.getLeft()));
         structure.add(subsetB);
         structure.add(new ProofStatement(new SubsetOf(equality.getRight(), equality.getLeft()), "by the definition of subset"));
 

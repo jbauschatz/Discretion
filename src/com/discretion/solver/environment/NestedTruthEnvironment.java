@@ -1,5 +1,7 @@
 package com.discretion.solver.environment;
 
+import com.discretion.MathObject;
+import com.discretion.Variable;
 import com.discretion.statement.Statement;
 
 import java.util.LinkedList;
@@ -7,10 +9,15 @@ import java.util.List;
 
 public class NestedTruthEnvironment implements TruthEnvironment {
 
-    public boolean containsTruth(Statement truth) {
-        return truths.contains(truth)
-            || (parent != null && parent.containsTruth(truth));
-    }
+	public boolean containsTruth(Statement truth) {
+		return truths.contains(truth)
+			   || (parent != null && parent.containsTruth(truth));
+	}
+
+	public boolean containsName(String name) {
+		return names.contains(name)
+			   || (parent != null && parent.containsName(name));
+	}
 
     /**
      * Returns whether the new statement was added
@@ -24,6 +31,12 @@ public class NestedTruthEnvironment implements TruthEnvironment {
             return false;
 
         truths.add(truth);
+
+		for (String name : nameExtractor.getNames(truth)) {
+			if (!containsName(name))
+				names.add(name);
+		}
+
         return true;
     }
 
@@ -53,9 +66,7 @@ public class NestedTruthEnvironment implements TruthEnvironment {
     }
 
     public NestedTruthEnvironment getChildEnvironment(Statement newTruth) {
-        LinkedList<Statement> childStatements = new LinkedList<>();
-        childStatements.add(newTruth);
-        NestedTruthEnvironment child = new NestedTruthEnvironment(childStatements);
+        NestedTruthEnvironment child = new NestedTruthEnvironment(newTruth);
         child.parent = this;
         return child;
     }
@@ -66,20 +77,45 @@ public class NestedTruthEnvironment implements TruthEnvironment {
         return child;
     }
 
+	public Variable newVariableName(String likeThis) {
+		String uniqueName = likeThis;
+		while (containsName(uniqueName))
+			uniqueName = uniqueName + "'";
+
+		return new Variable(uniqueName);
+	}
+
+	public Variable newElementName(MathObject set) {
+		if (set instanceof Variable) {
+			String setName = ((Variable)set).getName();
+			return newVariableName(setName.toLowerCase());
+		}
+		return newVariableName("x");
+	}
+
     public NestedTruthEnvironment(List<Statement> initialTruths) {
-        truths = new LinkedList<>();
+		this();
 
         for (Statement s : initialTruths)
             addTruth(s);
     }
 
     public NestedTruthEnvironment(Statement... initialTruths) {
-        truths = new LinkedList<>();
+		this();
 
         for (Statement s : initialTruths)
             addTruth(s);
     }
 
+	private NestedTruthEnvironment() {
+		truths = new LinkedList<>();
+		names = new LinkedList<>();
+		nameExtractor = new VariableNameExtractor();
+	}
+
+	private VariableNameExtractor nameExtractor;
+
     private TruthEnvironment parent;
-    private List<Statement> truths;
+	private List<Statement> truths;
+	private List<String> names;
 }

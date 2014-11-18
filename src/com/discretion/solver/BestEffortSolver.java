@@ -31,7 +31,7 @@ public class BestEffortSolver implements Solver {
     private Proof getStructure(List<Statement> given, Statement conclusion, TruthEnvironment environment) {
         for (ProofStructureProducer structure : structures) {
             if (structure.applies(conclusion)) {
-                Proof proof = structure.produceStructure(given, conclusion);
+                Proof proof = structure.produceStructure(given, conclusion, environment);
 
                 // Scan steps for sub-proofs, which may be partial and need fleshing out
                 for (ProofItem item : proof.getProofItems()) {
