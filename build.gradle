@@ -1,0 +1,49 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'application'
+apply plugin: 'fatjar'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = 'com.discretion'
+version = '1.0.0a'
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2'
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+    testCompile 'junit:junit:4.11'
+}
+
+mainClassName = 'com.discretion.SolveHomework'
+
+fatJar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+}

@@ -1,11 +1,11 @@
 package com.discretion.proof;
 
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.MINIMAL_CLASS,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 public interface ProofItem {
-    public void accept(ProofItemVisitor visitor);
+    void accept(ProofItemVisitor visitor);
 }

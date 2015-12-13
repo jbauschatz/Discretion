@@ -1,8 +1,5 @@
 package com.discretion;
 
-import com.discretion.MathObject;
-import com.discretion.MathObjectVisitor;
-
 public class Variable implements MathObject {
 
     public boolean equals(Object other) {

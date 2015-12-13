@@ -1,0 +1,11 @@
+# Build
+build
+.gradle
+out
+output
+
+# IntelliJ
+Discretion.iml
+Discretion.ipr
+Discretion.iws
+.idea

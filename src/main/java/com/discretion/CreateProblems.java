@@ -25,7 +25,7 @@ public class CreateProblems {
         LinkedList<Problem> problems = new LinkedList<>();
         problems.add(problem);
 
-        File problemsFile = new File("data/tempProblems.json");
+        File problemsFile = new File("output/tempProblems.json");
         ProofParser.save(problems, problemsFile);
     }
 }

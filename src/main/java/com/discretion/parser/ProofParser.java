@@ -2,19 +2,20 @@ package com.discretion.parser;
 
 import com.discretion.proof.Proof;
 import com.discretion.solver.Problem;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
 
 public class ProofParser {
 
-    public static List<Problem> parseProblems(File file) {
+    public static List<Problem> parseProblems(Reader reader) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            List<Problem> problems = objectMapper.readValue(file,
+            List<Problem> problems = objectMapper.readValue(reader,
                     objectMapper.getTypeFactory().constructCollectionType(List.class, Problem.class));
             return problems;
         } catch (IOException e) {

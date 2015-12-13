@@ -2,22 +2,27 @@ package com.discretion.proof;
 
 import com.discretion.PrettyPrinter;
 
+import java.io.*;
+
 public class ProofPrinter implements ProofItemVisitor {
 
-    public void prettyPrint(Proof proof) {
+    public void prettyPrint(Proof proof, PrintStream outputStream) {
+        this.outputStream = outputStream;
         indentLevel = 0;
         subProofsThisLevel = 0;
 
         if (!proof.getSuppositions().isEmpty())
-            System.out.println("Suppose " + printer.commaList(proof.getSuppositions()) + ".");
+			indent("Suppose " + printer.commaList(proof.getSuppositions()) + ".");
 
         for (ProofItem item : proof.getProofItems())
-            item.accept(this);
+			item.accept(this);
 
-        System.out.print("Therefore " + printer.prettyString(proof.getConclusion().getStatement()));
+        String conclusion = "Therefore " + printer.prettyString(proof.getConclusion().getStatement());
         if (proof.getConclusion().getReason() != null)
-            System.out.print(" " + proof.getConclusion().getReason());
-        System.out.println(", QED.");
+			conclusion += " " + proof.getConclusion().getReason();
+        conclusion += ", QED.";
+
+        indent(conclusion);
     }
 
     public void visit(Proof proof) {
@@ -72,10 +77,11 @@ public class ProofPrinter implements ProofItemVisitor {
     private void indent(String s) {
         for (int i = 0; i<indentLevel; ++i)
             s = "  " + s;
-        System.out.println(s);
+        outputStream.println(s);
     }
 
     private PrettyPrinter printer;
+    private PrintStream outputStream;
     private int indentLevel;
     private int subProofsThisLevel;
 }

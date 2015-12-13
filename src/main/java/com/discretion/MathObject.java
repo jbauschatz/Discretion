@@ -1,6 +1,6 @@
 package com.discretion;
 
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * Any mathematical expression, such as a variable, a function or function application,

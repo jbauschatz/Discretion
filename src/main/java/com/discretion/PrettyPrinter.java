@@ -16,10 +16,6 @@ import java.util.List;
 
 public class PrettyPrinter implements MathObjectVisitor {
 
-    public void prettyPrint(MathObject object) {
-        System.out.println(prettyString(object));
-    }
-
     public String prettyString(MathObject object) {
         pretty = "";
         object.accept(this);
@@ -27,7 +23,7 @@ public class PrettyPrinter implements MathObjectVisitor {
     }
 
     /**
-     * Returns a comma seperated list with the Oxford Comma
+     * Returns a comma separated list with the Oxford Comma
      */
     public String commaList(List<? extends MathObject> objects) {
         if (objects.size() == 1)
@@ -50,7 +46,7 @@ public class PrettyPrinter implements MathObjectVisitor {
 
     public void visit(ElementOf elem) {
         elem.getElement().accept(this);
-        pretty += " \u2208 ";
+        pretty += " ∈ ";
         elem.getSet().accept(this);
     }
 
@@ -62,13 +58,13 @@ public class PrettyPrinter implements MathObjectVisitor {
 
     public void visit(SubsetOf elem) {
         elem.getSubset().accept(this);
-        pretty += " \u2286 ";
+        pretty += " ⊆ ";
         elem.getSet().accept(this);
     }
 
     public void visit(SetUnion union) {
         parensIfNeeded(union, union.getLeft());
-        pretty += " \u222A ";
+        pretty += " ∪ ";
         parensIfNeeded(union, union.getRight());
     }
 
@@ -91,13 +87,13 @@ public class PrettyPrinter implements MathObjectVisitor {
 
     public void visit(Conjunction conjunction) {
         parensIfNeeded(conjunction, conjunction.getLeft());
-        pretty += " \u2227 ";
+        pretty += " ∧ ";
         parensIfNeeded(conjunction, conjunction.getRight());
     }
 
     public void visit(Disjunction disjunction) {
         parensIfNeeded(disjunction, disjunction.getLeft());
-        pretty += " \u2228 ";
+        pretty += " ∨ ";
         parensIfNeeded(disjunction, disjunction.getRight());
     }
 
