@@ -15,7 +15,7 @@ import java.util.List;
  * x elementOf X and X subsetOf Y
  * implies x elementOf Y
  */
-public class ElementOfSuperset implements InferenceProducer {
+public class ElementOfSuperset implements InferenceRule {
     public List<ProofStatement> getInferences(TruthEnvironment environment) {
         List<ProofStatement> inferences = new LinkedList<>();
 

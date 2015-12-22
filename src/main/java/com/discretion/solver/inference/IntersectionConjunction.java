@@ -3,19 +3,17 @@ package com.discretion.solver.inference;
 import com.discretion.AbstractMathObjectVisitor;
 import com.discretion.MathObject;
 import com.discretion.expression.SetIntersection;
-import com.discretion.expression.SetUnion;
 import com.discretion.proof.ProofStatement;
 import com.discretion.solver.Replacer;
 import com.discretion.solver.environment.TruthEnvironment;
 import com.discretion.statement.Conjunction;
-import com.discretion.statement.Disjunction;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.Statement;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class IntersectionConjunction extends AbstractMathObjectVisitor implements InferenceProducer{
+public class IntersectionConjunction extends AbstractMathObjectVisitor implements InferenceRule {
     @Override
     public List<ProofStatement> getInferences(TruthEnvironment environment) {
         inferences = new LinkedList<>();

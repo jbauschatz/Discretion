@@ -4,15 +4,15 @@ import com.discretion.expression.*;
 import com.discretion.statement.*;
 
 public interface MathObjectVisitor {
-    public void visit(Variable variable);
-    public void visit(ElementOf elem);
-    public void visit(Equality equality);
-    public void visit(SubsetOf subset);
-    public void visit(SetUnion union);
-    public void visit(SetIntersection intersection);
-    public void visit(SetDifference difference);
-    public void visit(SetComplement complement);
-    public void visit(Conjunction conjunction);
-    public void visit(Disjunction disjunction);
-    public void visit(Negation negation);
+    void visit(Variable variable);
+    void visit(ElementOf elem);
+    void visit(Equality equality);
+    void visit(SubsetOf subset);
+    void visit(SetUnion union);
+    void visit(SetIntersection intersection);
+    void visit(SetDifference difference);
+    void visit(SetComplement complement);
+    void visit(Conjunction conjunction);
+    void visit(Disjunction disjunction);
+    void visit(Negation negation);
 }

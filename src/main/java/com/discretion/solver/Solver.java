@@ -6,5 +6,5 @@ import com.discretion.statement.Statement;
 import java.util.List;
 
 public interface Solver {
-    public Proof solve(Statement conclusion, List<Statement> given);
+    Proof solve(Statement conclusion, List<Statement> given);
 }

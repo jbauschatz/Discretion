@@ -14,7 +14,7 @@ import com.discretion.statement.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SetDifferenceInference extends AbstractMathObjectVisitor implements InferenceProducer {
+public class SetDifferenceInference extends AbstractMathObjectVisitor implements InferenceRule {
     @Override
     public List<ProofStatement> getInferences(TruthEnvironment environment) {
         inferences = new LinkedList<>();

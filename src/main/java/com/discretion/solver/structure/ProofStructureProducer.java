@@ -7,6 +7,6 @@ import com.discretion.statement.Statement;
 import java.util.List;
 
 public interface ProofStructureProducer {
-    public boolean applies(Statement statement);
-    public Proof produceStructure(List<Statement> suppositions, Statement conclusion, TruthEnvironment environment);
+    boolean applies(Statement statement);
+    Proof produceStructure(List<Statement> suppositions, Statement conclusion, TruthEnvironment environment);
 }

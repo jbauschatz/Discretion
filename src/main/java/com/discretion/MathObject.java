@@ -12,5 +12,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 public interface MathObject {
-    public void accept(MathObjectVisitor visitor);
+    void accept(MathObjectVisitor visitor);
 }

@@ -57,24 +57,24 @@ public class BestEffortInferenceChain implements InferenceChainProducer {
 	public BestEffortInferenceChain() {
 		maxSearchDepth = 6;
 
-		inferenceProducers = new LinkedList<>();
+		inferenceRules = new LinkedList<>();
 
 		// logical inferences
-		inferenceProducers.add(new DeMorgansLaw());
-		inferenceProducers.add(new Specialization());
+		inferenceRules.add(new DeMorgansLaw());
+		inferenceRules.add(new Specialization());
 
 		// set theory specific
-		inferenceProducers.add(new ElementOfSuperset());
-		inferenceProducers.add(new UnionDisjunction());
-		inferenceProducers.add(new IntersectionConjunction());
-		inferenceProducers.add(new AssociateDisjunction());
-		inferenceProducers.add(new SetComplementInference());
-		inferenceProducers.add(new SetDifferenceInference());
+		inferenceRules.add(new ElementOfSuperset());
+		inferenceRules.add(new UnionDisjunction());
+		inferenceRules.add(new IntersectionConjunction());
+		inferenceRules.add(new AssociateDisjunction());
+		inferenceRules.add(new SetComplementInference());
+		inferenceRules.add(new SetDifferenceInference());
 	}
 
 	private List<ProofStatement> getImmediateInferences(TruthEnvironment environment) {
 		List<ProofStatement> inferences = new LinkedList<>();
-		for (InferenceProducer inference : inferenceProducers) {
+		for (InferenceRule inference : inferenceRules) {
 			for (ProofStatement newTruth : inference.getInferences(environment)) {
 				if (!environment.containsTruth(newTruth.getStatement()))
 					inferences.add(newTruth);
@@ -84,5 +84,5 @@ public class BestEffortInferenceChain implements InferenceChainProducer {
 	}
 
 	private int maxSearchDepth;
-	private List<InferenceProducer> inferenceProducers;
+	private List<InferenceRule> inferenceRules;
 }

@@ -13,7 +13,7 @@ import com.discretion.statement.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DeMorgansLaw extends AbstractMathObjectVisitor implements InferenceProducer {
+public class DeMorgansLaw extends AbstractMathObjectVisitor implements InferenceRule {
     @Override
     public List<ProofStatement> getInferences(TruthEnvironment environment) {
         inferences = new LinkedList<>();

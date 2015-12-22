@@ -18,15 +18,15 @@ import java.util.List;
  */
 public interface TruthEnvironment {
 
-	public boolean containsTruth(Statement truth);
+	boolean containsTruth(Statement truth);
 
-	public boolean containsName(String variableName);
+	boolean containsName(String variableName);
 
-    public List<Statement> getTruths();
-    public <S extends Statement> List<S> getTruths(Class<S> statementClass);
+    List<Statement> getTruths();
+    <S extends Statement> List<S> getTruths(Class<S> statementClass);
 
-    public NestedTruthEnvironment getChildEnvironment(Statement newTruth);
-    public NestedTruthEnvironment getChildEnvironment(List<Statement> newTruths);
+    NestedTruthEnvironment getChildEnvironment(Statement newTruth);
+    NestedTruthEnvironment getChildEnvironment(List<Statement> newTruths);
 
 	/**
 	 * Gets an available variable name based on the names used in the environment,
@@ -36,6 +36,6 @@ public interface TruthEnvironment {
 	 * context, will produce an alternative like "x'". The returned variable is
 	 * guaranteed not to collide.
 	 */
-	public Variable newVariableName(String likeThis);
-	public Variable newElementName(MathObject set);
+	Variable newVariableName(String likeThis);
+	Variable newElementName(MathObject set);
 }
