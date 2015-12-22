@@ -10,77 +10,79 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BestEffortInferenceChain implements InferenceChainProducer {
-    public List<ProofItem> buildInferenceChain(Statement conclusion, TruthEnvironment environment) {
-        InferenceNode root = new InferenceNode();
-        root.environment = environment;
-        List<InferenceNode> frontier = new LinkedList<>();
-        frontier.add(root);
+	public List<ProofItem> buildInferenceChain(Statement conclusion, TruthEnvironment environment) {
+		InferenceNode root = new InferenceNode();
+		root.environment = environment;
+		List<InferenceNode> frontier = new LinkedList<>();
+		frontier.add(root);
 
-        for (int depth = 0; depth<maxSearchDepth; ++depth) {
-            LinkedList<InferenceNode> newFrontier = new LinkedList<>();
-            for (InferenceNode node : frontier) {
-                // Search all inference steps that could be taken
-                for (ProofStatement statement : getImmediateInferences(node.environment)) {
-                    if (statement.getStatement().equals(conclusion)) {
-                        // We've reached the conclusion, which means we can reconstruct the
-                        // shortest inference chain
-                        LinkedList<ProofItem> chain = new LinkedList<>();
-                        InferenceNode predecessor = node;
-                        while (predecessor != root) {
-                            chain.addFirst(predecessor.inference);
-                            predecessor = predecessor.predecessor;
-                        }
-                        return chain;
-                    } else {
-                        InferenceNode newSearchNode = new InferenceNode();
-                        newSearchNode.predecessor = node;
-                        newSearchNode.inference = statement;
-                        newSearchNode.environment = node.environment.getChildEnvironment(statement.getStatement());
-                        newFrontier.add(newSearchNode);
-                    }
-                }
-            }
-            frontier = newFrontier;
-        }
+		for (int depth = 0; depth<maxSearchDepth; ++depth) {
+			LinkedList<InferenceNode> newFrontier = new LinkedList<>();
+			for (InferenceNode node : frontier) {
+				// Search all inference steps that could be taken
+				for (ProofStatement statement : getImmediateInferences(node.environment)) {
+					if (statement.getStatement().equals(conclusion)) {
+						// We've reached the conclusion, which means we can reconstruct the inference chain
+						LinkedList<ProofItem> chain = new LinkedList<>();
+						chain.add(statement);
 
-        // All possibilities have been searched to the search depth,
-        // so the proof is unknown
+						// Work backwards from the conclusion
+						InferenceNode predecessor = node;
+						while (predecessor != root) {
+							chain.addFirst(predecessor.inference);
+							predecessor = predecessor.predecessor;
+						}
+						return chain;
+					} else {
+						InferenceNode newSearchNode = new InferenceNode();
+						newSearchNode.predecessor = node;
+						newSearchNode.inference = statement;
+						newSearchNode.environment = node.environment.getChildEnvironment(statement.getStatement());
+						newFrontier.add(newSearchNode);
+					}
+				}
+			}
+			frontier = newFrontier;
+		}
 
-        List<ProofItem> unknown = new LinkedList<>();
-        unknown.add(new UnknownSteps());
+		// All possibilities have been searched to the search depth,
+		// so the proof is unknown
 
-        return unknown;
-    }
+		List<ProofItem> unknown = new LinkedList<>();
+		unknown.add(new UnknownSteps());
 
-    public BestEffortInferenceChain() {
-        maxSearchDepth = 6;
+		return unknown;
+	}
 
-        inferenceProducers = new LinkedList<>();
+	public BestEffortInferenceChain() {
+		maxSearchDepth = 6;
 
-        // logical inferences
-        inferenceProducers.add(new DeMorgansLaw());
-        inferenceProducers.add(new Specialization());
+		inferenceProducers = new LinkedList<>();
 
-        // set theory specific
-        inferenceProducers.add(new ElementOfSuperset());
-        inferenceProducers.add(new UnionDisjunction());
-        inferenceProducers.add(new IntersectionConjunction());
-        inferenceProducers.add(new AssociateDisjunction());
-        inferenceProducers.add(new SetComplementInference());
-        inferenceProducers.add(new SetDifferenceInference());
-    }
+		// logical inferences
+		inferenceProducers.add(new DeMorgansLaw());
+		inferenceProducers.add(new Specialization());
 
-    private List<ProofStatement> getImmediateInferences(TruthEnvironment environment) {
-        List<ProofStatement> inferences = new LinkedList<>();
-        for (InferenceProducer inference : inferenceProducers) {
-            for (ProofStatement newTruth : inference.getInferences(environment)) {
-                if (!environment.containsTruth(newTruth.getStatement()))
-                    inferences.add(newTruth);
-            }
-        }
-        return inferences;
-    }
+		// set theory specific
+		inferenceProducers.add(new ElementOfSuperset());
+		inferenceProducers.add(new UnionDisjunction());
+		inferenceProducers.add(new IntersectionConjunction());
+		inferenceProducers.add(new AssociateDisjunction());
+		inferenceProducers.add(new SetComplementInference());
+		inferenceProducers.add(new SetDifferenceInference());
+	}
 
-    private int maxSearchDepth;
-    private List<InferenceProducer> inferenceProducers;
+	private List<ProofStatement> getImmediateInferences(TruthEnvironment environment) {
+		List<ProofStatement> inferences = new LinkedList<>();
+		for (InferenceProducer inference : inferenceProducers) {
+			for (ProofStatement newTruth : inference.getInferences(environment)) {
+				if (!environment.containsTruth(newTruth.getStatement()))
+					inferences.add(newTruth);
+			}
+		}
+		return inferences;
+	}
+
+	private int maxSearchDepth;
+	private List<InferenceProducer> inferenceProducers;
 }

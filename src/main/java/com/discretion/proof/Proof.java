@@ -50,7 +50,15 @@ public class Proof implements ProofItem {
 		this.conclusion = conclusion;
 	}
 
-    public Proof() {
+	public Proof(List<Statement> suppositions, List<ProofItem> proof) {
+		this.suppositions = suppositions;
+
+		this.proof = new LinkedList<>();
+		this.proof.addAll(proof);
+		this.conclusion = (ProofStatement)this.proof.remove(proof.size()-1);
+	}
+
+	public Proof() {
         suppositions = new LinkedList<>();
         proof = new LinkedList<>();
     }

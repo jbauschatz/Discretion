@@ -28,7 +28,7 @@ public class SubsetStructure implements ProofStructureProducer {
 		Variable element = environment.newElementName(subset);
         elementProof.getSuppositions().add(new ElementOf(element, subset));
         elementProof.getProofItems().add(new UnknownSteps());
-        elementProof.setConclusion(new ProofStatement(new ElementOf(element, set), "by the definition of subset"));
+        elementProof.setConclusion(new ProofStatement(new ElementOf(element, set)));
 
         List<ProofItem> structure = new LinkedList<>();
         structure.add(elementProof);

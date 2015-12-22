@@ -30,7 +30,7 @@ public class SetEqualityStructure implements ProofStructureProducer {
         subsetA.getProofItems().add(new UnknownSteps());
         subsetA.setConclusion(new ElementOf(elementA, equality.getRight()));
         structure.add(subsetA);
-        structure.add(new ProofStatement(new SubsetOf(equality.getLeft(), equality.getRight()), "by the definition of subset"));
+        structure.add(new ProofStatement(new SubsetOf(equality.getLeft(), equality.getRight())));
 
         Proof subsetB = new Proof();
 		Variable elementB = environment.newElementName(equality.getRight());
@@ -38,7 +38,7 @@ public class SetEqualityStructure implements ProofStructureProducer {
         subsetB.getProofItems().add(new UnknownSteps());
         subsetB.setConclusion(new ElementOf(elementB, equality.getLeft()));
         structure.add(subsetB);
-        structure.add(new ProofStatement(new SubsetOf(equality.getRight(), equality.getLeft()), "by the definition of subset"));
+        structure.add(new ProofStatement(new SubsetOf(equality.getRight(), equality.getLeft())));
 
 		ProofStatement newConclusion = new ProofStatement(conclusion, "by the definition of set equality");
 

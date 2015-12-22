@@ -51,7 +51,7 @@ public class BestEffortSolver implements Solver {
 
         // No further structure could be imposed on this problem, so we must build a chain of inferences
         List<ProofItem> statements = inference.buildInferenceChain(conclusion, environment);
-		return new Proof(given, statements, conclusion);
+		return new Proof(given, statements);
     }
 
     private List<ProofStructureProducer> structures;

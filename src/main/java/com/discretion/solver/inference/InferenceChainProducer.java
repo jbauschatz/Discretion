@@ -8,9 +8,9 @@ import java.util.List;
 
 /**
  * Given a set of Statements assumed to be true, creates a chain of inferences that
- * correctly produces a desired conclusion. *
+ * correctly produces a desired conclusion.
  *
  */
 public interface InferenceChainProducer {
-    public List<ProofItem> buildInferenceChain(Statement conclusion, TruthEnvironment environment);
+    List<ProofItem> buildInferenceChain(Statement conclusion, TruthEnvironment environment);
 }
