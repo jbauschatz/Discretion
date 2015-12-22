@@ -19,7 +19,6 @@ public class SetComplementInference extends AbstractMathObjectVisitor implements
     public List<ProofStatement> getInferences(TruthEnvironment environment) {
         inferences = new LinkedList<>();
 
-        // Each truth-statement in the environment can potentially be substituted using this rule
         for (Statement object : environment.getTruths()) {
             originalStatement = object;
             traverse(object);
@@ -36,8 +35,13 @@ public class SetComplementInference extends AbstractMathObjectVisitor implements
     protected void handle(Negation negation) {
         MathObject negated = negation.getTerm();
         if (negated instanceof ElementOf) {
-            ElementOf element = (ElementOf)negated;
-            ElementOf elementOfComplement = new ElementOf(element.getElement(), new SetComplement(element.getSet()));
+            ElementOf elementOf = (ElementOf)negated;
+            MathObject set = elementOf.getSet();
+            MathObject complemented = (set instanceof SetComplement) ?
+                    ((SetComplement)set).getSet()
+                    : new SetComplement(set);
+
+            ElementOf elementOfComplement = new ElementOf(elementOf.getElement(), complemented);
             Statement replaced = (Statement)replacer.substitute(originalStatement, negation, elementOfComplement);
 
             inferences.add(new ProofStatement(replaced, "by the definition of set complement"));
@@ -46,8 +50,13 @@ public class SetComplementInference extends AbstractMathObjectVisitor implements
 
     @Override
     protected void handle(ElementOf elementOf) {
+        if (parent instanceof Negation)
+            return;
+
         MathObject set = elementOf.getSet();
-        MathObject complemented = (set instanceof SetComplement) ? ((SetComplement)set).getSet() : new SetComplement(set);
+        MathObject complemented = (set instanceof SetComplement) ?
+                ((SetComplement)set).getSet()
+                : new SetComplement(set);
 
         Negation negation = new Negation(
             new ElementOf(elementOf.getElement(), complemented)
