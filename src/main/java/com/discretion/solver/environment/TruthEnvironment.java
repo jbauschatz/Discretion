@@ -23,10 +23,12 @@ public interface TruthEnvironment {
 	boolean containsName(String variableName);
 
     List<Statement> getTruths();
-    <S extends Statement> List<S> getTruths(Class<S> statementClass);
 
-    NestedTruthEnvironment getChildEnvironment(Statement newTruth);
-    NestedTruthEnvironment getChildEnvironment(List<Statement> newTruths);
+	<S extends Statement> List<S> getTruths(Class<S> statementClass);
+
+	TruthEnvironment getChildEnvironment(Statement newTruth);
+
+	TruthEnvironment getChildEnvironment(List<Statement> newTruths);
 
 	/**
 	 * Gets an available variable name based on the names used in the environment,
@@ -37,5 +39,6 @@ public interface TruthEnvironment {
 	 * guaranteed not to collide.
 	 */
 	Variable newVariableName(String likeThis);
+
 	Variable newElementName(MathObject set);
 }

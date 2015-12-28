@@ -6,8 +6,10 @@ import com.discretion.proof.ProofPrinter;
 import com.discretion.solver.BestEffortSolver;
 import com.discretion.solver.Problem;
 import com.discretion.solver.Solver;
+import com.discretion.solver.StructureOnlySolver;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 
 public class SolveHomework {
@@ -15,21 +17,26 @@ public class SolveHomework {
         Reader homeworkReader = new InputStreamReader(SolveHomework.class.getResourceAsStream("/problems/homework.json"));
         List<Problem> problems = ProofParser.parseProblems(homeworkReader);
 
-        Solver solver = new BestEffortSolver();
+        List<Solver> solvers = Arrays.asList(
+				new BestEffortSolver(),
+				new StructureOnlySolver()
+		);
         ProofPrinter printer = new ProofPrinter(new PrettyPrinter());
 
         try {
-            File outputDirectory = new File("output");
+            File outputDirectory = new File("output/solutions");
             outputDirectory.mkdirs();
 
-            File solutionFile = new File(outputDirectory, "homework-solutions");
-            PrintStream outputStream = new PrintStream(solutionFile);
+			for (Solver solver : solvers) {
+				File solutionFile = new File(outputDirectory, solver.getClass().getSimpleName());
+				PrintStream outputStream = new PrintStream(solutionFile);
 
-            for (Problem p : problems) {
-                Proof proof = solver.solve(p.getConclusion(), p.getGiven());
-                printer.prettyPrint(proof, outputStream);
-                outputStream.println("\n");
-            }
+				for (Problem p : problems) {
+					Proof proof = solver.solve(p.getConclusion(), p.getGiven());
+					printer.prettyPrint(proof, outputStream);
+					outputStream.println("\n");
+				}
+			}
         } catch (IOException e) {
             e.printStackTrace();
         }
