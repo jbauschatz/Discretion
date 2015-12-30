@@ -18,8 +18,12 @@ public class StructureOnlySolver extends StructuredSolver {
     public StructureOnlySolver() {
     }
 
-	protected Proof fleshOutProof(List<Statement> given, Statement conclusion, TruthEnvironment environment) {
-		List<ProofItem> unknown = Collections.singletonList(new UnknownSteps());
-		return new Proof(given, unknown, conclusion);
+	@Override
+	protected Proof fleshOutProof(Proof proof, TruthEnvironment environment) {
+//		List<ProofItem> unknownSteps = Collections.singletonList(new UnknownSteps());
+//
+//		return new Proof(proof.getSuppositions(), unknownSteps, proof.getConclusion());
+
+		return proof;
 	}
 }

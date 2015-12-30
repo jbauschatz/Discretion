@@ -31,8 +31,8 @@ public class SolveHomework {
 				File solutionFile = new File(outputDirectory, solver.getClass().getSimpleName());
 				PrintStream outputStream = new PrintStream(solutionFile);
 
-				for (Problem p : problems) {
-					Proof proof = solver.solve(p.getConclusion(), p.getGiven());
+				for (Problem problem : problems) {
+					Proof proof = solver.solve(problem);
 					printer.prettyPrint(proof, outputStream);
 					outputStream.println("\n");
 				}
