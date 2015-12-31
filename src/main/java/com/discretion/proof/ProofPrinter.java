@@ -11,6 +11,9 @@ public class ProofPrinter implements ProofItemVisitor {
         indentLevel = 0;
         subProofsThisLevel = 0;
 
+		if (proof.getTitle() != null)
+			indent(proof.getTitle());
+
         if (!proof.getSuppositions().isEmpty())
 			indent("Suppose " + printer.commaList(proof.getSuppositions()) + ".");
 

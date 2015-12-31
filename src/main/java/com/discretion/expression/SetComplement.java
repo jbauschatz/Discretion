@@ -2,6 +2,7 @@ package com.discretion.expression;
 
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
+import com.discretion.Variable;
 
 public class SetComplement implements MathObject {
 
@@ -24,9 +25,13 @@ public class SetComplement implements MathObject {
         visitor.visit(this);
     }
 
-    public SetComplement(MathObject set) {
-        this.set = set;
-    }
+	public SetComplement(MathObject set) {
+		this.set = set;
+	}
+
+	public SetComplement(String set) {
+		this.set = new Variable(set);
+	}
 
     public SetComplement() {
     }

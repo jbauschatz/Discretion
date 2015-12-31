@@ -1,10 +1,14 @@
-package com.discretion.solver;
+package com.discretion.problem;
 
 import com.discretion.statement.Statement;
 
 import java.util.List;
 
 public class Problem {
+
+	public String getTitle() {
+		return title;
+	}
 
     public Statement getConclusion() {
         return conclusion;
@@ -22,14 +26,13 @@ public class Problem {
         this.given = given;
     }
 
-    public Problem(Statement conclusion, List<Statement> given) {
+    public Problem(String title, Statement conclusion, List<Statement> given) {
+		this.title = title;
         this.conclusion = conclusion;
         this.given = given;
     }
 
-    public Problem() {
-    }
-
+	private String title;
     private List<Statement> given;
     private Statement conclusion;
 }

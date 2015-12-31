@@ -1,7 +1,7 @@
 package com.discretion.parser;
 
 import com.discretion.proof.Proof;
-import com.discretion.solver.Problem;
+import com.discretion.problem.Problem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;

@@ -1,10 +1,11 @@
 package com.discretion;
 
-import com.discretion.parser.ProofParser;
+import com.discretion.problem.Homework;
+import com.discretion.problem.ProblemSet;
 import com.discretion.proof.Proof;
 import com.discretion.proof.ProofPrinter;
 import com.discretion.solver.BestEffortSolver;
-import com.discretion.solver.Problem;
+import com.discretion.problem.Problem;
 import com.discretion.solver.Solver;
 import com.discretion.solver.StructureOnlySolver;
 
@@ -14,27 +15,32 @@ import java.util.List;
 
 public class SolveHomework {
     public static void main(String[] args) {
-        Reader homeworkReader = new InputStreamReader(SolveHomework.class.getResourceAsStream("/problems/homework.json"));
-        List<Problem> problems = ProofParser.parseProblems(homeworkReader);
-
         List<Solver> solvers = Arrays.asList(
 				new BestEffortSolver(),
 				new StructureOnlySolver()
 		);
         ProofPrinter printer = new ProofPrinter(new PrettyPrinter());
 
-        try {
-            File outputDirectory = new File("output/solutions");
-            outputDirectory.mkdirs();
+		try {
+			File outputDirectory = new File("output/solutions");
+			System.out.println("Output directory: " + outputDirectory);
+			outputDirectory.mkdirs();
 
-			for (Solver solver : solvers) {
-				File solutionFile = new File(outputDirectory, solver.getClass().getSimpleName());
-				PrintStream outputStream = new PrintStream(solutionFile);
+			for (ProblemSet problemSet : Homework.ALL_PROBLEM_SETS) {
+				System.out.println("Solving problem set: " + problemSet.getTitle());
 
-				for (Problem problem : problems) {
-					Proof proof = solver.solve(problem);
-					printer.prettyPrint(proof, outputStream);
-					outputStream.println("\n");
+				for (Solver solver : solvers) {
+					String solverName = solver.getClass().getSimpleName();
+					System.out.println("   solver: " + solverName);
+
+					File solutionFile = new File(outputDirectory, problemSet.getTitle() + "-" + solverName + ".txt");
+					PrintStream outputStream = new PrintStream(solutionFile);
+
+					for (Problem problem : problemSet.getProblems()) {
+						Proof proof = solver.solve(problem);
+						printer.prettyPrint(proof, outputStream);
+						outputStream.println("\n");
+					}
 				}
 			}
         } catch (IOException e) {

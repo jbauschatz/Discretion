@@ -2,6 +2,7 @@ package com.discretion.expression;
 
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
+import com.discretion.Variable;
 
 public class SetUnion implements MathObject {
 
@@ -37,9 +38,11 @@ public class SetUnion implements MathObject {
         this.right = right;
     }
 
-    public SetUnion() {
-    }
+	public SetUnion(String left, String right) {
+		this.left = new Variable(left);
+		this.right = new Variable(right);
+	}
 
-    private MathObject left;
+	private MathObject left;
     private MathObject right;
 }

@@ -6,6 +6,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Proof implements ProofItem {
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
     public List<Statement> getSuppositions() {
         return suppositions;
     }
@@ -63,6 +72,7 @@ public class Proof implements ProofItem {
         proof = new LinkedList<>();
     }
 
+	private String title;
     private List<Statement> suppositions;
     private List<ProofItem> proof;
     private ProofStatement conclusion;

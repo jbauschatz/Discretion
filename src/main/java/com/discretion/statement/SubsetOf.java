@@ -2,6 +2,7 @@ package com.discretion.statement;
 
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
+import com.discretion.Variable;
 
 public class SubsetOf implements Statement {
 
@@ -36,6 +37,11 @@ public class SubsetOf implements Statement {
         this.subset = element;
         this.set = set;
     }
+
+	public SubsetOf(String subset, String set) {
+		this.subset = new Variable(subset);
+		this.set = new Variable(set);
+	}
 
     public SubsetOf() {
     }
