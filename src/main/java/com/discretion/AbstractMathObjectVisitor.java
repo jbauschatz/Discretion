@@ -1,9 +1,6 @@
 package com.discretion;
 
-import com.discretion.expression.SetComplement;
-import com.discretion.expression.SetDifference;
-import com.discretion.expression.SetIntersection;
-import com.discretion.expression.SetUnion;
+import com.discretion.expression.*;
 import com.discretion.statement.*;
 
 public class AbstractMathObjectVisitor implements MathObjectVisitor {
@@ -111,7 +108,15 @@ public class AbstractMathObjectVisitor implements MathObjectVisitor {
         negation.getTerm().accept(this);
     }
 
-    protected void handle(Variable variable) {
+	public final void visit(CartesianProduct product) {
+		handle(product);
+
+		parent = product;
+		for (MathObject set : product.getSets())
+			set.accept(this);
+	}
+
+	protected void handle(Variable variable) {
     }
 
     protected void handle(ElementOf elem) {
@@ -141,8 +146,11 @@ public class AbstractMathObjectVisitor implements MathObjectVisitor {
     protected void handle(Disjunction disjunction) {
     }
 
-    protected void handle(Negation negation) {
-    }
+	protected void handle(Negation negation) {
+	}
+
+	protected void handle(CartesianProduct product) {
+	}
 
     protected MathObject parent;
 }

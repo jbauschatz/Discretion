@@ -1,9 +1,6 @@
 package com.discretion;
 
-import com.discretion.expression.SetComplement;
-import com.discretion.expression.SetDifference;
-import com.discretion.expression.SetIntersection;
-import com.discretion.expression.SetUnion;
+import com.discretion.expression.*;
 import com.discretion.statement.Conjunction;
 import com.discretion.statement.Disjunction;
 import com.discretion.statement.ElementOf;
@@ -103,19 +100,30 @@ public class PrettyPrinter implements MathObjectVisitor {
         parensIfNeeded(negation, negation.getTerm());
     }
 
+	public void visit(CartesianProduct product) {
+		MathObject[] sets = product.getSets();
+		parensIfNeeded(product, sets[0]);
+
+		for (int i = 1; i<sets.length; ++i) {
+			pretty += " × ";
+			parensIfNeeded(product, sets[i]);
+		}
+	}
+
 	public PrettyPrinter() {
 		precedence = new HashMap<>();
 
 		int p = 0;
-		precedence.put(SetDifference.class, p++);
 
 		// Conjunction and Disjunction have the same precedence
 		precedence.put(Conjunction.class, p);
 		precedence.put(Disjunction.class, p++);
 
-		// Union and Intersection have the same precedence
+		// These set notations have the same precedence
 		precedence.put(SetUnion.class, p);
-		precedence.put(SetIntersection.class, p++);
+		precedence.put(SetIntersection.class, p);
+		precedence.put(SetDifference.class, p); // TODO is this correct?
+		precedence.put(CartesianProduct.class, p++);
 
 		precedence.put(SetComplement.class, p++);
 

@@ -14,5 +14,6 @@ public interface MathObjectVisitor {
     void visit(SetComplement complement);
     void visit(Conjunction conjunction);
     void visit(Disjunction disjunction);
-    void visit(Negation negation);
+	void visit(Negation negation);
+	void visit(CartesianProduct products);
 }

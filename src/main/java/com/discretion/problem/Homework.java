@@ -1,10 +1,7 @@
 package com.discretion.problem;
 
 import com.discretion.Variable;
-import com.discretion.expression.SetComplement;
-import com.discretion.expression.SetDifference;
-import com.discretion.expression.SetIntersection;
-import com.discretion.expression.SetUnion;
+import com.discretion.expression.*;
 import com.discretion.statement.Equality;
 import com.discretion.statement.SubsetOf;
 
@@ -79,7 +76,32 @@ public class Homework {
 		);
 		DMFP_4_2.getProblems().add(distributeUnionSubset);
 
-		// TODO add the 4.2 Cartesian Product problems
+		Problem problem4_2_6 = new Problem(
+				"4.2.6",
+				new SubsetOf(
+						new SetUnion(new CartesianProduct(SET_A, SET_C), new CartesianProduct(SET_B, SET_C)),
+						new CartesianProduct(new SetUnion(SET_A, SET_B), SET_C)),
+				Arrays.asList(new SubsetOf(SET_A, UNIVERSAL_SET), new SubsetOf(SET_B, UNIVERSAL_SET), new SubsetOf(SET_C, UNIVERSAL_SET))
+		);
+		DMFP_4_2.getProblems().add(problem4_2_6);
+
+		Problem problem4_2_7 = new Problem(
+				"4.2.7",
+				new SubsetOf(
+						new SetUnion(new CartesianProduct(SET_A, SET_B), new CartesianProduct(SET_A, SET_C)),
+						new CartesianProduct(SET_A, new SetUnion(SET_B, SET_C))),
+				Arrays.asList(new SubsetOf(SET_A, UNIVERSAL_SET), new SubsetOf(SET_B, UNIVERSAL_SET), new SubsetOf(SET_C, UNIVERSAL_SET))
+		);
+		DMFP_4_2.getProblems().add(problem4_2_7);
+
+		Problem problem4_2_8 = new Problem(
+				"4.2.8",
+				new SubsetOf(
+						new CartesianProduct(SET_A, new SetDifference(SET_B, SET_C)),
+						new SetDifference(new CartesianProduct(SET_A, SET_B), new CartesianProduct(SET_A, SET_C))),
+				Arrays.asList(new SubsetOf(SET_A, UNIVERSAL_SET), new SubsetOf(SET_B, UNIVERSAL_SET), new SubsetOf(SET_C, UNIVERSAL_SET))
+		);
+		DMFP_4_2.getProblems().add(problem4_2_8);
 
 		// 4.3 Problems - set equality
 		Problem intersectEmptySet = new Problem(
@@ -98,7 +120,14 @@ public class Homework {
 		);
 		DMFP_4_3.getProblems().add(unionAndIntersection);
 
-		// TODO 4.3.3 with Cartesian Product
+		Problem distributeCartesianProduct = new Problem(
+				"4.3.3",
+				new Equality(
+						new CartesianProduct(SET_A, new SetUnion(SET_B, SET_C)),
+						new SetUnion(new CartesianProduct(SET_A, SET_B), new CartesianProduct(SET_A, SET_C))),
+				Arrays.asList(new SubsetOf(SET_A, UNIVERSAL_SET), new SubsetOf(SET_B, UNIVERSAL_SET), new SubsetOf(SET_C, UNIVERSAL_SET))
+		);
+		DMFP_4_3.getProblems().add(distributeCartesianProduct);
 
 		Problem distributeUnion = new Problem(
 				"4.3.4",
@@ -127,7 +156,14 @@ public class Homework {
 		);
 		DMFP_4_3.getProblems().add(emptySet);
 
-		// TODO 4.3.7 with Cartesian Product
+		Problem problem4_3_7 = new Problem(
+				"4.3.7",
+				new Equality(
+						new CartesianProduct(SET_A, new SetDifference(SET_B, SET_C)),
+						new SetDifference(new CartesianProduct(SET_A, SET_B), new CartesianProduct(SET_A, SET_C))),
+				Arrays.asList(new SubsetOf(SET_A, UNIVERSAL_SET), new SubsetOf(SET_B, UNIVERSAL_SET), new SubsetOf(SET_C, UNIVERSAL_SET))
+		);
+		DMFP_4_3.getProblems().add(problem4_3_7);
 
 		Problem associativeUnion = new Problem(
 				"4.3.8",

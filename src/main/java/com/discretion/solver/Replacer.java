@@ -3,10 +3,7 @@ package com.discretion.solver;
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
 import com.discretion.Variable;
-import com.discretion.expression.SetComplement;
-import com.discretion.expression.SetDifference;
-import com.discretion.expression.SetIntersection;
-import com.discretion.expression.SetUnion;
+import com.discretion.expression.*;
 import com.discretion.statement.*;
 
 public class Replacer implements MathObjectVisitor {
@@ -57,9 +54,13 @@ public class Replacer implements MathObjectVisitor {
         replacedCopy = copy(disjunction);
     }
 
-    public void visit(Negation negation) {
-        replacedCopy = copy(negation);
-    }
+	public void visit(Negation negation) {
+		replacedCopy = copy(negation);
+	}
+
+	public void visit(CartesianProduct product) {
+		replacedCopy = copy(product);
+	}
 
     private MathObject copyAndReplace(MathObject object) {
         if (object == replaceThis)
@@ -97,14 +98,14 @@ public class Replacer implements MathObjectVisitor {
         return new SetDifference(copyAndReplace(difference.getLeft()), copyAndReplace(difference.getRight()));
     }
 
-    private MathObject copy(SetComplement complement) {
-        return new SetComplement(complement.getSet());
-    }
+	private MathObject copy(SetComplement complement) {
+		return new SetComplement(complement.getSet());
+	}
 
     private MathObject copy(Conjunction conjunction) {
         return new Conjunction(
-                (Statement)copyAndReplace(conjunction.getLeft()),
-                (Statement)copyAndReplace(conjunction.getRight())
+                copyAndReplace(conjunction.getLeft()),
+                copyAndReplace(conjunction.getRight())
         );
     }
 
@@ -115,6 +116,10 @@ public class Replacer implements MathObjectVisitor {
     private MathObject copy(Negation negation) {
         return new Negation(copyAndReplace(negation.getTerm()));
     }
+
+	private MathObject copy(CartesianProduct product) {
+		return new CartesianProduct(product.getSets());
+	}
 
     private MathObject replaceThis;
     private MathObject withThis;
