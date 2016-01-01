@@ -33,8 +33,5 @@ public class SetComplement implements MathObject {
 		this.set = new Variable(set);
 	}
 
-    public SetComplement() {
-    }
-
     private MathObject set;
 }

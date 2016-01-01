@@ -11,6 +11,7 @@ import com.discretion.statement.Equality;
 import com.discretion.statement.Negation;
 import com.discretion.statement.SubsetOf;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -103,15 +104,25 @@ public class PrettyPrinter implements MathObjectVisitor {
     }
 
 	public PrettyPrinter() {
-		precedence = new LinkedList<>();
-		precedence.addFirst(Variable.class);
-		precedence.addFirst(Negation.class);
-		precedence.addFirst(SetComplement.class);
-		precedence.addFirst(SetIntersection.class);
-		precedence.addFirst(SetDifference.class);
-		precedence.addFirst(SetUnion.class);
-		precedence.addFirst(ElementOf.class);
-		precedence.addFirst(SubsetOf.class);
+		precedence = new HashMap<>();
+
+		int p = 0;
+		precedence.put(SetDifference.class, p++);
+
+		// Conjunction and Disjunction have the same precedence
+		precedence.put(Conjunction.class, p);
+		precedence.put(Disjunction.class, p++);
+
+		// Union and Intersection have the same precedence
+		precedence.put(SetUnion.class, p);
+		precedence.put(SetIntersection.class, p++);
+
+		precedence.put(SetComplement.class, p++);
+
+		precedence.put(ElementOf.class, p++);
+		precedence.put(SubsetOf.class, p++);
+		precedence.put(Negation.class, p++);
+		precedence.put(Variable.class, p);
 	}
 
     private void parensIfNeeded(MathObject parent, MathObject object) {
@@ -124,9 +135,14 @@ public class PrettyPrinter implements MathObjectVisitor {
     }
 
 	private int precedence(MathObject object) {
-		return precedence.indexOf(object.getClass());
+		Class<?> mathClass = object.getClass();
+
+		if (!precedence.containsKey(mathClass))
+			throw new IllegalArgumentException("No precedence is defined for " + mathClass);
+
+		return precedence.get(mathClass);
 	}
 
     String pretty;
-	private LinkedList<Class<?>> precedence;
+	private HashMap<Class<?>, Integer> precedence;
 }
