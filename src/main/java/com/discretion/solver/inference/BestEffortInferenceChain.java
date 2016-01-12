@@ -60,6 +60,7 @@ public class BestEffortInferenceChain implements InferenceChainProducer {
 		inferenceRules = new LinkedList<>();
 
 		// logical inferences
+		inferenceRules.add(new DoubleNegative());
 		inferenceRules.add(new DeMorgansLaw());
 		inferenceRules.add(new Specialization());
 
