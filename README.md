@@ -61,4 +61,39 @@ So x ∈ Y.
 X ⊆ Y by the definition of subset.
 ```
 
-Discretion implements this structured approach to proof solving with the ProofStructureProducer interface.
+Discretion implements this structured approach to proof solving with the ProofStructureProducer interface. Each subtype of ProofStructureProducer is responsible for providing the structure to a particular kind of proof. For example the structure of a set equality proof, including two sub-proofs, is provided by the SetEqualityStructure:
+
+```
+Suppose A ⊆ U.
+Further suppose x ∈ A ∪ (A ∩ B).
+  ???
+So x ∈ A.
+A ∪ (A ∩ B) ⊆ A by the definition of subset.
+Now suppose a ∈ A.
+  ???
+So a ∈ A ∪ (A ∩ B).
+A ⊆ A ∪ (A ∩ B) by the definition of subset.
+Therefore A ∪ (A ∩ B) = A by the definition of set equality, QED.
+```
+
+This approach allows Discretion to solve a proof for "partial credit", in that even if the body of the proof cannot be solve a a valid proof structure may be provided. 
+
+### Completing a proof
+
+### Rules of Inference
+
+Within the given structure of a proof, its body basically consists of a series of inferences. These inferences must procede logically from previous inferences, or supposed facts, until the conclusion is reached.
+
+An rule of inference is represented by the InferenceRule interface. Subtypes of this interface represent a specific mathematical rule. These rules are able to produce new statements from the statements that are assumed, and together they form a chain of inferences that is the heart of the proof. For example the definition of Subset is implemented in this manner:
+
+```
+Given: x ∈ A, A ⊆ B
+
+Infer: x ∈ B
+```
+
+This rule procedes from the given statements to produce a new statement.
+
+## Search Algorithm
+
+Solving a proof involves performing a breadth-first search algorithm. Branching involves applying any applical inference rule over a set of statements until conclusion is reached. There may be many valid inference chains that reach the conclusion, and Discretion prefers the shortest one.
