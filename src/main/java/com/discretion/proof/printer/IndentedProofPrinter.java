@@ -1,10 +1,15 @@
-package com.discretion.proof;
+package com.discretion.proof.printer;
 
 import com.discretion.PrettyPrinter;
+import com.discretion.proof.*;
 
 import java.io.*;
 
-public class ProofPrinter implements ProofItemVisitor {
+public class IndentedProofPrinter implements ProofItemVisitor, ProofPrettyPrinter {
+
+	public String getName() {
+		return name;
+	}
 
     public void prettyPrint(Proof proof, PrintStream outputStream) {
         this.outputStream = outputStream;
@@ -73,9 +78,14 @@ public class ProofPrinter implements ProofItemVisitor {
         indent("???");
     }
 
-    public ProofPrinter(PrettyPrinter printer) {
+    public IndentedProofPrinter(String name, PrettyPrinter printer) {
+		this.name = name;
         this.printer = printer;
     }
+
+	public IndentedProofPrinter(String name) {
+		this(name, new PrettyPrinter());
+	}
 
     private void indent(String s) {
         for (int i = 0; i<indentLevel; ++i)
@@ -87,4 +97,5 @@ public class ProofPrinter implements ProofItemVisitor {
     private PrintStream outputStream;
     private int indentLevel;
     private int subProofsThisLevel;
+	private String name;
 }

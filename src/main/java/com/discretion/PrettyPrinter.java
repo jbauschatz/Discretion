@@ -85,13 +85,13 @@ public class PrettyPrinter implements MathObjectVisitor {
 
     public void visit(Conjunction conjunction) {
         parensIfNeeded(conjunction, conjunction.getLeft());
-        pretty += " ∧ ";
+        pretty += useEnglish ? " and " : " ∧ ";
         parensIfNeeded(conjunction, conjunction.getRight());
     }
 
     public void visit(Disjunction disjunction) {
         parensIfNeeded(disjunction, disjunction.getLeft());
-        pretty += " ∨ ";
+        pretty += useEnglish ? " or " : " ∨ ";
         parensIfNeeded(disjunction, disjunction.getRight());
     }
 
@@ -111,6 +111,11 @@ public class PrettyPrinter implements MathObjectVisitor {
 	}
 
 	public PrettyPrinter() {
+		this(false);
+	}
+
+	public PrettyPrinter(boolean useEnglish) {
+		this.useEnglish = useEnglish;
 		precedence = new HashMap<>();
 
 		int p = 0;
@@ -151,6 +156,7 @@ public class PrettyPrinter implements MathObjectVisitor {
 		return precedence.get(mathClass);
 	}
 
-    String pretty;
+	private String pretty;
+	private boolean useEnglish;
 	private HashMap<Class<?>, Integer> precedence;
 }
