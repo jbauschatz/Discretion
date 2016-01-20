@@ -4,41 +4,76 @@ import com.discretion.PrettyPrinter;
 import com.discretion.proof.*;
 
 import java.io.*;
+import java.util.StringTokenizer;
 
 public class ParagraphProofPrinter implements ProofItemVisitor, ProofPrettyPrinter {
+
+	private static void printParagraph(String text, PrintStream stream, int width) {
+		StringTokenizer tokens = new StringTokenizer(text, " ");
+		int lineWidth = 0;
+		boolean isNewLine = true;
+
+		while (tokens.hasMoreTokens()) {
+			String word = tokens.nextToken();
+			int length = isNewLine ? word.length() : word.length() + 1;
+
+			if (lineWidth + length > width) {
+				isNewLine = true;
+				stream.println();
+				lineWidth = 0;
+			}
+
+			if (!isNewLine)
+				stream.print(' ');
+
+			stream.print(word);
+			lineWidth += length;
+			isNewLine = false;
+		}
+	}
 
 	public String getName() {
 		return name;
 	}
 
 	public void prettyPrint(Proof proof, PrintStream outputStream) {
-		this.outputStream = outputStream;
 		subProofsThisLevel = 0;
 
+		// Title
 		if (proof.getTitle() != null)
 			outputStream.println(proof.getTitle());
 
-		if (!proof.getSuppositions().isEmpty())
-			outputStream.print("Suppose " + printer.commaList(proof.getSuppositions()) + ". ");
+		// Suppositions
+		if (!proof.getSuppositions().isEmpty()) {
+			printParagraph("Suppose " + printer.commaList(proof.getSuppositions()) + ". ", outputStream, paragraphWidth);
+			outputStream.println();
+		}
 
+		outputBuilder = new StringBuilder();
+
+		// Body of proof
 		for (ProofItem item : proof.getProofItems())
 			item.accept(this);
 
-		String conclusion = "Therefore ";
+		// Conclusion
+		outputBuilder.append("Therefore ");
 		if (proof.getConclusion().getReason() != null) {
-			conclusion += proof.getConclusion().getReason() + ", ";
+			outputBuilder.append(proof.getConclusion().getReason());
+			outputBuilder.append(", ");
 		}
-		conclusion += printer.prettyString(proof.getConclusion().getStatement()) + ", QED.";
+		outputBuilder.append(printer.prettyString(proof.getConclusion().getStatement()));
+		outputBuilder.append(", QED.");
 
-		outputStream.println(conclusion);
+		printParagraph(outputBuilder.toString(), outputStream, paragraphWidth);
+		outputStream.append(System.lineSeparator());
 	}
 
 	public void visit(Proof proof) {
 		// This is a sub proof nested at some level
 		if (subProofsThisLevel > 0)
-			outputStream.print("Now suppose " + printer.commaList(proof.getSuppositions()) + ". ");
+			outputBuilder.append("Now suppose " + printer.commaList(proof.getSuppositions()) + ". ");
 		else
-			outputStream.print("Further suppose " + printer.commaList(proof.getSuppositions()) + ". ");
+			outputBuilder.append("Further suppose " + printer.commaList(proof.getSuppositions()) + ". ");
 
 		++subProofsThisLevel;
 
@@ -55,37 +90,40 @@ public class ParagraphProofPrinter implements ProofItemVisitor, ProofPrettyPrint
 		// Print the conclusion of the sub-proof
 		// This is a sub-proof so we use something less strong than "therefore"
 		if (proof.getConclusion().getReason() != null) {
-			outputStream.print("So " + proof.getConclusion().getReason()
+			outputBuilder.append("So " + proof.getConclusion().getReason()
 					+ ", " + printer.prettyString(proof.getConclusion().getStatement()) + ". ");
 		} else {
-			outputStream.print("So " + printer.prettyString(proof.getConclusion().getStatement()) + ". ");
+			outputBuilder.append("So " + printer.prettyString(proof.getConclusion().getStatement()) + ". ");
 		}
 	}
 
 	public void visit(ProofStatement statement) {
 		if (statement.getReason() != null) {
 			String reason = statement.getReason().substring(0, 1).toUpperCase() + statement.getReason().substring(1);
-			outputStream.print(reason + ", " + printer.prettyString(statement.getStatement()) + ". ");
+			outputBuilder.append(reason + ", " + printer.prettyString(statement.getStatement()) + ". ");
 		} else {
-			outputStream.print(printer.prettyString(statement.getStatement()) + " ");
+			outputBuilder.append(printer.prettyString(statement.getStatement()) + " ");
 		}
 	}
 
 	public void visit(UnknownSteps unknown) {
-		outputStream.print("... ");
+		outputBuilder.append("... ");
 	}
 
 	public ParagraphProofPrinter(String name, PrettyPrinter printer) {
 		this.name = name;
 		this.printer = printer;
+
+		paragraphWidth = 60;
 	}
 
 	public ParagraphProofPrinter(String name) {
 		this(name, new PrettyPrinter(true));
 	}
 
+	private int paragraphWidth;
 	private PrettyPrinter printer;
-	private PrintStream outputStream;
+	private StringBuilder outputBuilder;
 	private int subProofsThisLevel;
 	private String name;
 }
