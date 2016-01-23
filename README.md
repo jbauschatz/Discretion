@@ -49,6 +49,68 @@ gradle idea
 
 ## How it Works
 
+### Reprsentation
+
+Discretion represents mathematical expressions using a tree-like datastructure, similar to an Abstract Syntax Tree. This data is constructed as Discretion solves a problem, forming an abstract representation of the solution. In a later step this data is pretty-printed to produce the final, human readable output.
+
+The hierarchy of math expressions is represented by the `MathObject` interface. The simplest kind of expression is a variable, represented by the `Variable` class:
+
+```Java
+new Variable("X")
+```
+
+More complicated expressions are formed by combining variables and operators like so:
+
+```Java
+new ElementOf(
+      new Variable("x")
+      new SetUnion(
+            new Variable("A"),
+            new Variable("B")
+      )
+);
+```
+
+The above Object represents the expression:
+
+```
+x ∈ A ∪ B
+```
+
+### Pretty Printing
+
+The final output of the program is produced by "pretty printing" nicely formatted text from the proofs' datastructures. The output is seperated from the datastructure so that a variety of output styles can serve a variety of contexts. Currently there are two output modes: Indented and Paragraph Style.
+
+Indented output looks much like a computer program:
+
+```
+4.2.4
+Suppose A ⊆ U and B ⊆ U.
+Further suppose x ∈ ~(A ∪ B).
+  ¬(x ∈ A ∪ B) by the definition of set complement.
+  ¬(x ∈ A ∨ x ∈ B) by the definition of union.
+  ¬(x ∈ A) ∧ ¬(x ∈ B) by DeMorgan's Law.
+  x ∈ ~A ∧ ¬(x ∈ B) by the definition of set complement.
+  x ∈ ~A ∧ x ∈ ~B by the definition of set complement.
+So x ∈ ~A ∩ ~B, by the definition of intersection.
+Therefore ~(A ∪ B) ⊆ ~A ∩ ~B by the definition of subset, QED.
+```
+
+Paragraph style aims for a more "plain english" reading, and mimics the style presented in *Discrete Mathematics and Functional Programming*:
+
+```
+4.2.4
+Suppose A ⊆ U and B ⊆ U.
+Further suppose x ∈ ~(A ∪ B). By the definition of set
+complement, ¬(x ∈ A ∪ B). By the definition of union,
+¬(x ∈ A or x ∈ B). By DeMorgan's Law, ¬(x ∈ A) and
+¬(x ∈ B). By the definition of set complement, x ∈ ~A
+and ¬(x ∈ B). By the definition of set complement, x ∈
+~A and x ∈ ~B. So by the definition of intersection, x
+∈ ~A ∩ ~B. Therefore by the definition of subset, ~(A
+∪ B) ⊆ ~A ∩ ~B, QED.
+```
+
 ### Structuring a Proof
 
 Certain kinds of proofs demand a certain structure - there are certain things that must be supposed and concluded in order to complete the proof. For example a typical subset proof has this structure:
@@ -61,7 +123,7 @@ So x ∈ Y.
 X ⊆ Y by the definition of subset.
 ```
 
-Discretion implements this structured approach to proof solving with the ProofStructureProducer interface. Each subtype of ProofStructureProducer is responsible for providing the structure to a particular kind of proof. For example the structure of a set equality proof, including two sub-proofs, is provided by the SetEqualityStructure:
+Discretion implements this structured approach to proof solving with the `ProofStructureProducer` interface. Each subtype of `ProofStructureProducer` is responsible for providing the structure to a particular kind of proof. For example the structure of a set equality proof, including two sub-proofs, is provided by the `SetEqualityStructure`:
 
 ```
 Suppose A ⊆ U.
@@ -78,13 +140,11 @@ Therefore A ∪ (A ∩ B) = A by the definition of set equality, QED.
 
 This approach allows Discretion to solve a proof for "partial credit", in that even if the body of the proof cannot be solve a a valid proof structure may be provided. 
 
-### Completing a proof
-
 ### Rules of Inference
 
 Within the given structure of a proof, its body basically consists of a series of inferences. These inferences must procede logically from previous inferences, or supposed facts, until the conclusion is reached.
 
-An rule of inference is represented by the InferenceRule interface. Subtypes of this interface represent a specific mathematical rule. These rules are able to produce new statements from the statements that are assumed, and together they form a chain of inferences that is the heart of the proof. For example the definition of Subset is implemented in this manner:
+An rule of inference is represented by the `InferenceRule` interface. Subtypes of this interface represent a specific mathematical rule. These rules are able to produce new statements from the statements that are assumed, and together they form a chain of inferences that is the heart of the proof. For example the definition of Subset is implemented in this manner:
 
 ```
 Given: x ∈ A, A ⊆ B
