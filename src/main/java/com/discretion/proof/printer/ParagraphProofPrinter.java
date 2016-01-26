@@ -114,7 +114,7 @@ public class ParagraphProofPrinter implements ProofItemVisitor, ProofPrettyPrint
 		this.name = name;
 		this.printer = printer;
 
-		paragraphWidth = 60;
+		paragraphWidth = 80;
 	}
 
 	public ParagraphProofPrinter(String name) {

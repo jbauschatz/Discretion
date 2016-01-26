@@ -101,14 +101,12 @@ Paragraph style aims for a more "plain english" reading, and mimics the style pr
 ```
 4.2.4
 Suppose A ⊆ U and B ⊆ U.
-Further suppose x ∈ ~(A ∪ B). By the definition of set
-complement, ¬(x ∈ A ∪ B). By the definition of union,
-¬(x ∈ A or x ∈ B). By DeMorgan's Law, ¬(x ∈ A) and
-¬(x ∈ B). By the definition of set complement, x ∈ ~A
-and ¬(x ∈ B). By the definition of set complement, x ∈
-~A and x ∈ ~B. So by the definition of intersection, x
-∈ ~A ∩ ~B. Therefore by the definition of subset, ~(A
-∪ B) ⊆ ~A ∩ ~B, QED.
+Further suppose x ∈ ~(A ∪ B). By the definition of set complement, ¬(x ∈
+A ∪ B). By the definition of union, ¬(x ∈ A or x ∈ B). By DeMorgan's
+Law, ¬(x ∈ A) and ¬(x ∈ B). By the definition of set complement, x ∈ ~A
+and ¬(x ∈ B). By the definition of set complement, x ∈ ~A and x ∈ ~B. So
+by the definition of intersection, x ∈ ~A ∩ ~B. Therefore by the definition
+of subset, ~(A ∪ B) ⊆ ~A ∩ ~B, QED.
 ```
 
 ### Structuring a Proof
