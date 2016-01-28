@@ -49,7 +49,7 @@ gradle idea
 
 ## How it Works
 
-### Reprsentation
+### Representation
 
 Discretion represents mathematical expressions using a tree-like datastructure, similar to an Abstract Syntax Tree. This data is constructed as Discretion solves a problem, forming an abstract representation of the solution. In a later step this data is pretty-printed to produce the final, human readable output.
 
@@ -63,7 +63,7 @@ More complicated expressions are formed by combining variables and operators lik
 
 ```Java
 new ElementOf(
-      new Variable("x")
+      new Variable("x"),
       new SetUnion(
             new Variable("A"),
             new Variable("B")
@@ -111,7 +111,7 @@ of subset, ~(A ∪ B) ⊆ ~A ∩ ~B, QED.
 
 ### Structuring a Proof
 
-Certain kinds of proofs demand a certain structure - there are certain things that must be supposed and concluded in order to complete the proof. For example a typical subset proof has this structure:
+Certain kinds of proofs demand a certain structure—there are certain things that must be supposed and concluded in order to complete the proof. For example a typical subset proof has this structure:
 
 ```
 Suppose A ⊆ U.
