@@ -12,5 +12,5 @@ import java.util.List;
  *
  */
 public interface InferenceChainProducer {
-    List<ProofItem> buildInferenceChain(Statement conclusion, TruthEnvironment environment);
+    List<ProofItem> buildInferenceChain(Statement conclusion, TruthEnvironment environment, int maxDepth);
 }

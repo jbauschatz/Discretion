@@ -33,7 +33,7 @@ public class BestEffortInferenceChainTest {
 				new ElementOf(new Variable("a"), new Variable("X"))
 		);
 		Statement conclusion = new ElementOf(new Variable("a"), new Variable("Y"));
-		List<ProofItem> chain = chainProducer.buildInferenceChain(conclusion, environment);
+		List<ProofItem> chain = chainProducer.buildInferenceChain(conclusion, environment, 6);
 
 		assertThat("Inference chain should include only 1 step", chain.size(), is(1));
 		assertThat("Environment should not be polluted with extra statements", environment.getTruths().size(), is(2));
@@ -52,7 +52,7 @@ public class BestEffortInferenceChainTest {
 				new ElementOf(new Variable("redHerringElement"), new Variable("X"))
 		);
 		Statement conclusion = new ElementOf(new Variable("a"), new Variable("Y"));
-		List<ProofItem> chain = chainProducer.buildInferenceChain(conclusion, environment);
+		List<ProofItem> chain = chainProducer.buildInferenceChain(conclusion, environment, 6);
 
 		assertThat("Inference chain should include only 1 step", chain.size(), is(1));
 		assertThat("Environment should not be polluted with extra statements", environment.getTruths().size(), is(4));
@@ -88,7 +88,7 @@ public class BestEffortInferenceChainTest {
 				new SetUnion(new Variable("B"), new Variable("C"))
 		));
 		TruthEnvironment environment = new NestedTruthEnvironment(leftParenthesized);
-		List<ProofItem> chain = chainProducer.buildInferenceChain(rightParenthesized, environment);
+		List<ProofItem> chain = chainProducer.buildInferenceChain(rightParenthesized, environment, 6);
 
 		assertThat("Inference chain should include 5 steps", chain.size(), is(5));
 		ProofStatement step1 = (ProofStatement)chain.get(0);

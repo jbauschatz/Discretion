@@ -15,15 +15,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class StructureOnlySolver extends StructuredSolver {
-    public StructureOnlySolver() {
-    }
 
 	@Override
-	protected Proof fleshOutProof(Proof proof, TruthEnvironment environment) {
-//		List<ProofItem> unknownSteps = Collections.singletonList(new UnknownSteps());
-//
-//		return new Proof(proof.getSuppositions(), unknownSteps, proof.getConclusion());
-
+	protected Proof fleshOutProof(Proof proof, TruthEnvironment environment, int maxInferenceDepth) {
 		return proof;
 	}
 }

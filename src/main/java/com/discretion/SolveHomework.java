@@ -46,7 +46,7 @@ public class SolveHomework {
 
 		// Solve the Problem
 		long proofStartTime = System.currentTimeMillis();
-		Proof proof = solver.solve(problem);
+		Proof proof = solver.solve(problem, searchDepth);
 		long proofSolveTime = System.currentTimeMillis() - proofStartTime;
 		System.out.println(String.format("Completed in %sms", proofSolveTime));
 

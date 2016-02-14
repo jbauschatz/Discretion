@@ -14,11 +14,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class StructuredSolver implements Solver {
-    public Proof solve(Problem problem) {
+    public Proof solve(Problem problem, int maxInferenceDepth) {
         TruthEnvironment environment = new NestedTruthEnvironment(problem.getGiven());
 		Proof proof = new Proof(problem.getGiven(), new LinkedList<>(), problem.getConclusion());
 
-        Proof structured = structureProof(proof, environment);
+        Proof structured = structureProof(proof, environment, maxInferenceDepth);
 		structured.setTitle(problem.getTitle());
 		return structured;
     }
@@ -33,7 +33,7 @@ public abstract class StructuredSolver implements Solver {
 	 * Given a Proof (produced by the structuring step), produce a Proof with the same
 	 * assumptions and conclusions but with its internals fleshed out
 	 */
-	protected abstract Proof fleshOutProof(Proof proof, TruthEnvironment environment);
+	protected abstract Proof fleshOutProof(Proof proof, TruthEnvironment environment, int maxInferenceDepth);
 
 	/**
 	 * Given a Proof, creates a structured version of the proof.
@@ -41,7 +41,7 @@ public abstract class StructuredSolver implements Solver {
 	 * This Proof will be populated with any of the required subproofs,
 	 * but it is up to the child class to flesh out the internals of all proofs
 	 */
-    protected Proof structureProof(Proof proof, TruthEnvironment environment) {
+    protected Proof structureProof(Proof proof, TruthEnvironment environment, int maxInferenceDepth) {
 		Statement conclusion = proof.getConclusion().getStatement();
 
         for (ProofStructureProducer structure : structures) {
@@ -55,7 +55,7 @@ public abstract class StructuredSolver implements Solver {
                         Proof subproof = (Proof)item;
 
                         TruthEnvironment subproofEnvironment = environment.getChildEnvironment(subproof.getSuppositions());
-                        Proof fleshedOutSubproof = structureProof(subproof, subproofEnvironment);
+                        Proof fleshedOutSubproof = structureProof(subproof, subproofEnvironment, maxInferenceDepth);
 						subproof.setProofItems(fleshedOutSubproof.getProofItems());
 						subproof.setConclusion(fleshedOutSubproof.getConclusion());
 					}
@@ -65,7 +65,7 @@ public abstract class StructuredSolver implements Solver {
             }
         }
 
-		return fleshOutProof(proof, environment);
+		return fleshOutProof(proof, environment, maxInferenceDepth);
     }
 
     private List<ProofStructureProducer> structures;

@@ -10,13 +10,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BestEffortInferenceChain implements InferenceChainProducer {
-	public List<ProofItem> buildInferenceChain(Statement conclusion, TruthEnvironment environment) {
+	public List<ProofItem> buildInferenceChain(Statement conclusion, TruthEnvironment environment, int maxDepth) {
 		InferenceNode root = new InferenceNode();
 		root.environment = environment;
 		List<InferenceNode> frontier = new LinkedList<>();
 		frontier.add(root);
 
-		for (int depth = 0; depth<maxSearchDepth; ++depth) {
+		for (int depth = 0; depth<maxDepth; ++depth) {
 			LinkedList<InferenceNode> newFrontier = new LinkedList<>();
 			for (InferenceNode node : frontier) {
 				// Search all inference steps that could be taken
@@ -55,8 +55,6 @@ public class BestEffortInferenceChain implements InferenceChainProducer {
 	}
 
 	public BestEffortInferenceChain() {
-		maxSearchDepth = 6;
-
 		inferenceRules = new LinkedList<>();
 
 		// logical inferences
@@ -84,6 +82,5 @@ public class BestEffortInferenceChain implements InferenceChainProducer {
 		return inferences;
 	}
 
-	private int maxSearchDepth;
 	private List<InferenceRule> inferenceRules;
 }

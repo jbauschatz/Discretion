@@ -18,9 +18,9 @@ public class BestEffortSolver extends StructuredSolver {
     }
 
 	@Override
-	protected Proof fleshOutProof(Proof proof, TruthEnvironment environment) {
+	protected Proof fleshOutProof(Proof proof, TruthEnvironment environment, int maxInferenceDepth) {
 		Statement conclusion = proof.getConclusion().getStatement();
-		List<ProofItem> statements = inference.buildInferenceChain(conclusion, environment);
+		List<ProofItem> statements = inference.buildInferenceChain(conclusion, environment, maxInferenceDepth);
 
 		if (!(statements.get(0) instanceof UnknownSteps))
 			return new Proof(proof.getSuppositions(), statements);
