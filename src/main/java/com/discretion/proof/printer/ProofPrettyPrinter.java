@@ -11,6 +11,4 @@ import java.io.PrintStream;
 public interface ProofPrettyPrinter {
 
 	void prettyPrint(Proof proof, PrintStream outputStream);
-
-	String getName();
 }

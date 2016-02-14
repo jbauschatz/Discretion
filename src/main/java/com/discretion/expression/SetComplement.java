@@ -2,7 +2,7 @@ package com.discretion.expression;
 
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
-import com.discretion.Variable;
+import com.discretion.statement.Variable;
 
 public class SetComplement implements MathObject {
 

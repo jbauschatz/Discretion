@@ -1,7 +1,6 @@
 package com.discretion.solver.inference;
 
-import com.discretion.PrettyPrinter;
-import com.discretion.Variable;
+import com.discretion.statement.Variable;
 import com.discretion.proof.ProofStatement;
 import com.discretion.solver.environment.NestedTruthEnvironment;
 import com.discretion.solver.environment.TruthEnvironment;
@@ -23,14 +22,20 @@ import static org.junit.Assert.assertThat;
  */
 public class DeMorgansTest {
 
+	/**
+	 * Prepare the object to be tested
+	 */
 	@Before
 	public void setUpTest() {
 		deMorgan = new DeMorgansLaw();
 	}
 
 	/**
-	 * Tests that:
-	 * (p and q) implies ~(~p or ~q)
+	 * Given:
+	 *     p ∧ q
+	 *
+	 * Infer:
+	 *     ¬(¬p ∨ ¬q)
 	 */
 	@Test
 	public void testPAndQ() {
@@ -47,10 +52,13 @@ public class DeMorgansTest {
 	}
 
 	/**
-	 * Tests that:
-	 * (~p and ~q) implies ~(p or q)
+	 * Given:
+	 *     ¬p ∧ ¬q
 	 *
-	 * note that double-negatives are simplified
+	 * Infer:
+	 *     ¬(p ∨ q)
+	 *
+	 * (note that double-negatives are simplified)
 	 */
 	@Test
 	public void testInnerNegations() {
@@ -67,10 +75,13 @@ public class DeMorgansTest {
 	}
 
 	/**
-	 * Tests that:
-	 * ~(p and q) implies (~p or ~q)
+	 * Given:
+	 *     ¬(p ∧ q)
 	 *
-	 * note that the double-negative is simplified
+	 * Infer:
+	 *     ¬p ∨ ¬q
+	 *
+	 * (note that the double-negative is simplified)
 	 */
 	@Test
 	public void testOuterNegation() {

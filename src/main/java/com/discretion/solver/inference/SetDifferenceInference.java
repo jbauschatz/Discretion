@@ -34,7 +34,23 @@ public class SetDifferenceInference extends AbstractMathObjectVisitor implements
 
     @Override
     protected void handle(Conjunction conjunction) {
-        // TODO apply the definition synthetically
+		// Case 1: a in A and a not in B -> a in A-B
+		if (conjunction.getLeft() instanceof ElementOf && conjunction.getRight() instanceof Negation) {
+			ElementOf leftSide = (ElementOf)conjunction.getLeft();
+			Negation rightSide = (Negation)conjunction.getRight();
+
+			if (rightSide.getTerm() instanceof ElementOf) {
+				ElementOf rightElementOf = (ElementOf)rightSide.getTerm();
+				if (rightElementOf.getElement().equals(leftSide.getElement())) {
+					ElementOf elementOfDifference = new ElementOf(leftSide.getElement(),
+							new SetDifference(leftSide.getSet(), rightElementOf.getSet()));
+					Statement replaced = (Statement)replacer.substitute(originalStatement, conjunction, elementOfDifference);
+					inferences.add(new ProofStatement(replaced, "by the definition of set difference"));
+				}
+			}
+		}
+
+		// TODO Case 2: a not in A and a in B -> a in B-A
     }
 
     @Override

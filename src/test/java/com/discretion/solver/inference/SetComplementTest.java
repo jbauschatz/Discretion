@@ -1,6 +1,6 @@
 package com.discretion.solver.inference;
 
-import com.discretion.Variable;
+import com.discretion.statement.Variable;
 import com.discretion.expression.SetComplement;
 import com.discretion.proof.ProofStatement;
 import com.discretion.solver.environment.NestedTruthEnvironment;
@@ -23,52 +23,86 @@ public class SetComplementTest {
 		complement = new SetComplementInference();
 	}
 
+	/**
+	 * Given:
+	 *      x ∈ X
+	 *
+	 * Infer:
+	 *      ¬(x ∈ ~X)
+	 */
 	@Test
 	public void testInSet() {
 		TruthEnvironment environment = new NestedTruthEnvironment(
-				new ElementOf(new Variable("x"), new Variable("X")));
+				new ElementOf("x", "X"));
 		List<ProofStatement> inferences = complement.getInferences(environment);
 
 		assertThat("Only one inference should be made", inferences.size(), is(1));
-		assertThat("(x in X) implies (x not in X~)",
+		assertThat("(x in X) implies (x not in ~X)",
 				inferences.get(0).getStatement(),
-				equalToExpression(new Negation(new ElementOf(new Variable("x"), new SetComplement(new Variable("X"))))));
+				is(equalToExpression(
+						new Negation(new ElementOf(new Variable("x"), new SetComplement("X"))))
+				));
 	}
 
+	/**
+	 * Given:
+	 *      ¬(x ∈ X)
+	 *
+	 * Infer:
+	 *      x ∈ ~X
+	 */
 	@Test
 	public void testNotInSet() {
 		TruthEnvironment environment = new NestedTruthEnvironment(
-				new Negation(new ElementOf(new Variable("x"), new Variable("X"))));
+				new Negation(new ElementOf("x", "X")));
 		List<ProofStatement> inferences = complement.getInferences(environment);
 
 		assertThat("Only one inference should be made", inferences.size(), is(1));
-		assertThat("(x not in X) implies (x in X~)",
+		assertThat("(x not in X) implies (x in ~X)",
 				inferences.get(0).getStatement(),
-				equalToExpression(new ElementOf(new Variable("x"), new SetComplement(new Variable("X")))));
+				is(equalToExpression(
+						new ElementOf(new Variable("x"), new SetComplement("X")))
+				));
 	}
 
+	/**
+	 * Given:
+	 *      x ∈ ~X
+	 *
+	 * Infer:
+	 *      ¬(x ∈ X)
+	 */
 	@Test
 	public void testInComplement() {
 		TruthEnvironment environment = new NestedTruthEnvironment(
-				new ElementOf(new Variable("x"), new SetComplement(new Variable("X"))));
+				new ElementOf(new Variable("x"), new SetComplement("X")));
 		List<ProofStatement> inferences = complement.getInferences(environment);
 
 		assertThat("Only one inference should be made", inferences.size(), is(1));
 		assertThat("(x in ~X) implies (x not in X)",
 				inferences.get(0).getStatement(),
-				equalToExpression(new Negation(new ElementOf(new Variable("x"), new Variable("X")))));
+				is(equalToExpression(
+						new Negation(new ElementOf("x", "X")))
+				));
 	}
 
+	/**
+	 * Given:
+	 *      ¬(x ∈ ~X)
+	 *
+	 * Infer:
+	 *      x ∈ X
+	 */
 	@Test
 	public void testNotInComplement() {
 		TruthEnvironment environment = new NestedTruthEnvironment(
-				new Negation(new ElementOf(new Variable("x"), new SetComplement(new Variable("X")))));
+				new Negation(new ElementOf(new Variable("x"), new SetComplement("X"))));
 		List<ProofStatement> inferences = complement.getInferences(environment);
 
 		assertThat("Only one inference should be made", inferences.size(), is(1));
 		assertThat("(x not in ~X) implies (x in X)",
 				inferences.get(0).getStatement(),
-				equalToExpression(new ElementOf(new Variable("x"), new Variable("X"))));
+				is(equalToExpression(new ElementOf("x", "X"))));
 	}
 
 	private SetComplementInference complement;

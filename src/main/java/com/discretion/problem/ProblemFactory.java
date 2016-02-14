@@ -1,16 +1,16 @@
 package com.discretion.problem;
 
-import com.discretion.Variable;
+import com.discretion.statement.Variable;
 import com.discretion.expression.*;
 import com.discretion.statement.Equality;
 import com.discretion.statement.SubsetOf;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
-public class Homework {
+public class ProblemFactory {
 
 	/**
 	 * Problems from section 4.2 of Discrete Mathematics and Functional Programming
@@ -33,7 +33,11 @@ public class Homework {
 	public static final Variable SET_B = new Variable("B");
 	public static final Variable SET_C = new Variable("C");
 
+	private static final HashMap<String, Problem> PROBLEMS;
+
 	static {
+		PROBLEMS = new HashMap<>();
+
 		// 4.2 Problems
 		Problem setInUnion = new Problem(
 				"4.2.1",
@@ -278,5 +282,18 @@ public class Homework {
 				Arrays.asList(new SubsetOf(SET_A, UNIVERSAL_SET), new SubsetOf(SET_B, UNIVERSAL_SET), new SubsetOf(SET_C, UNIVERSAL_SET))
 		);
 		DMFP_4_3.getProblems().add(problem4_3_19);
+
+		for (ProblemSet problemSet : ALL_PROBLEM_SETS) {
+			for (Problem problem : problemSet.getProblems()) {
+				PROBLEMS.put(problem.getTitle(), problem);
+			}
+		}
+	}
+
+	public static Problem getProblem(String name) {
+		if (!PROBLEMS.containsKey(name))
+			throw new IllegalArgumentException("Could not find Problem named: " + name);
+
+		return PROBLEMS.get(name);
 	}
 }

@@ -1,9 +1,7 @@
 package com.discretion.solver.inference;
 
-import com.discretion.PrettyPrinter;
-import com.discretion.Variable;
+import com.discretion.statement.Variable;
 import com.discretion.expression.SetUnion;
-import com.discretion.proof.Proof;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.ProofStatement;
 import com.discretion.solver.environment.NestedTruthEnvironment;
@@ -12,7 +10,6 @@ import com.discretion.statement.Disjunction;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.Statement;
 import com.discretion.statement.SubsetOf;
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

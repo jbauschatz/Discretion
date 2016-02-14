@@ -34,7 +34,7 @@ public class Specialization extends AbstractMathObjectVisitor implements Inferen
 		Statement replacedWithLeft = (Statement)replacer.substitute(originalStatement, conjunction, left);
 		inferences.add(new ProofStatement(replacedWithLeft, "by specialization"));
 
-		Statement right = (Statement)conjunction.getLeft();
+		Statement right = (Statement)conjunction.getRight();
 		Statement replacedWithRight = (Statement)replacer.substitute(originalStatement, conjunction, right);
 		inferences.add(new ProofStatement(replacedWithRight, "by specialization"));
     }

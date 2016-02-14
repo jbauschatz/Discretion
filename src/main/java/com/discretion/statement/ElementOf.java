@@ -2,7 +2,6 @@ package com.discretion.statement;
 
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
-import com.discretion.Variable;
 
 public class ElementOf implements Statement {
 

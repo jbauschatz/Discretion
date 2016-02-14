@@ -1,6 +1,6 @@
 package com.discretion.solver.environment;
 
-import com.discretion.Variable;
+import com.discretion.statement.Variable;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.Statement;
 import com.discretion.statement.SubsetOf;

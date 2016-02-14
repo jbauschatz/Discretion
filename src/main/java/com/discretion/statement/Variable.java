@@ -1,6 +1,9 @@
-package com.discretion;
+package com.discretion.statement;
 
-public class Variable implements MathObject {
+import com.discretion.MathObject;
+import com.discretion.MathObjectVisitor;
+
+public class Variable implements Statement {
 
     public boolean equals(Object other) {
         return other instanceof Variable && ((Variable)other).name.equals(name);

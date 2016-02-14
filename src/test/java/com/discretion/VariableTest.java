@@ -1,5 +1,6 @@
 package com.discretion;
 
+import com.discretion.statement.Variable;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;

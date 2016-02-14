@@ -1,7 +1,7 @@
 package com.discretion.solver.environment;
 
 import com.discretion.MathObject;
-import com.discretion.Variable;
+import com.discretion.statement.Variable;
 import com.discretion.statement.Statement;
 
 import java.util.LinkedList;
@@ -40,12 +40,14 @@ public class NestedTruthEnvironment implements TruthEnvironment {
         return true;
     }
 
+	@SuppressWarnings("unchecked")
     public <S extends Statement> List<S> getTruths(Class<S> statementClass) {
         LinkedList<S> filtered = new LinkedList<>();
 
         for (Statement s : getTruths()) {
-            if (s.getClass().equals(statementClass))
-                filtered.add((S)s);
+            if (s.getClass().equals(statementClass)) {
+				filtered.add((S) s);
+			}
         }
 
         return filtered;

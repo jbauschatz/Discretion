@@ -1,7 +1,7 @@
 package com.discretion.solver.structure;
 
 import com.discretion.MathObject;
-import com.discretion.Variable;
+import com.discretion.statement.Variable;
 import com.discretion.proof.Proof;
 import com.discretion.proof.ProofItem;
 import com.discretion.proof.ProofStatement;

@@ -1,7 +1,7 @@
 package com.discretion.solver.environment;
 
 import com.discretion.MathObject;
-import com.discretion.Variable;
+import com.discretion.statement.Variable;
 import com.discretion.statement.Statement;
 
 import java.util.List;

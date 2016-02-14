@@ -3,7 +3,7 @@ package com.discretion.solver.environment;
 
 import com.discretion.AbstractMathObjectVisitor;
 import com.discretion.MathObject;
-import com.discretion.Variable;
+import com.discretion.statement.Variable;
 
 import java.util.LinkedList;
 import java.util.List;

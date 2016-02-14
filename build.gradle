@@ -2,7 +2,6 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'application'
-apply plugin: 'fatjar'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -43,8 +42,7 @@ dependencies {
 
 mainClassName = 'com.discretion.SolveHomework'
 
-fatJar {
-    manifest {
-        attributes 'Main-Class': mainClassName
-    }
+run {
+    if (project.hasProperty('args'))
+        args project.args.split('\\s')
 }

@@ -7,10 +7,6 @@ import java.io.*;
 
 public class IndentedProofPrinter implements ProofItemVisitor, ProofPrettyPrinter {
 
-	public String getName() {
-		return name;
-	}
-
     public void prettyPrint(Proof proof, PrintStream outputStream) {
         this.outputStream = outputStream;
         indentLevel = 0;
@@ -78,13 +74,12 @@ public class IndentedProofPrinter implements ProofItemVisitor, ProofPrettyPrinte
         indent("???");
     }
 
-    public IndentedProofPrinter(String name, PrettyPrinter printer) {
-		this.name = name;
+    public IndentedProofPrinter(PrettyPrinter printer) {
         this.printer = printer;
     }
 
-	public IndentedProofPrinter(String name) {
-		this(name, new PrettyPrinter());
+	public IndentedProofPrinter() {
+		this(new PrettyPrinter());
 	}
 
     private void indent(String s) {
@@ -97,5 +92,4 @@ public class IndentedProofPrinter implements ProofItemVisitor, ProofPrettyPrinte
     private PrintStream outputStream;
     private int indentLevel;
     private int subProofsThisLevel;
-	private String name;
 }

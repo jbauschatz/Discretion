@@ -1,15 +1,9 @@
 package com.discretion;
 
 import com.discretion.expression.*;
-import com.discretion.statement.Conjunction;
-import com.discretion.statement.Disjunction;
-import com.discretion.statement.ElementOf;
-import com.discretion.statement.Equality;
-import com.discretion.statement.Negation;
-import com.discretion.statement.SubsetOf;
+import com.discretion.statement.*;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class PrettyPrinter implements MathObjectVisitor {

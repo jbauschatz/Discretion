@@ -2,7 +2,7 @@ package com.discretion.solver;
 
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
-import com.discretion.Variable;
+import com.discretion.statement.Variable;
 import com.discretion.expression.*;
 import com.discretion.statement.*;
 

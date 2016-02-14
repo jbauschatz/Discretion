@@ -32,10 +32,6 @@ public class ParagraphProofPrinter implements ProofItemVisitor, ProofPrettyPrint
 		}
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public void prettyPrint(Proof proof, PrintStream outputStream) {
 		subProofsThisLevel = 0;
 
@@ -110,20 +106,18 @@ public class ParagraphProofPrinter implements ProofItemVisitor, ProofPrettyPrint
 		outputBuilder.append("... ");
 	}
 
-	public ParagraphProofPrinter(String name, PrettyPrinter printer) {
-		this.name = name;
+	public ParagraphProofPrinter(PrettyPrinter printer) {
 		this.printer = printer;
 
 		paragraphWidth = 80;
 	}
 
-	public ParagraphProofPrinter(String name) {
-		this(name, new PrettyPrinter(true));
+	public ParagraphProofPrinter() {
+		this(new PrettyPrinter(true));
 	}
 
 	private int paragraphWidth;
 	private PrettyPrinter printer;
 	private StringBuilder outputBuilder;
 	private int subProofsThisLevel;
-	private String name;
 }
