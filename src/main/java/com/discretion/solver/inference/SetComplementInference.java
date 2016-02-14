@@ -8,6 +8,7 @@ import com.discretion.solver.Replacer;
 import com.discretion.solver.environment.TruthEnvironment;
 import com.discretion.statement.ElementOf;
 import com.discretion.statement.Negation;
+import com.discretion.statement.NotElementOf;
 import com.discretion.statement.Statement;
 
 import java.util.LinkedList;
@@ -31,38 +32,28 @@ public class SetComplementInference extends AbstractMathObjectVisitor implements
     }
 
     @Override
-    protected void handle(Negation negation) {
-        MathObject negated = negation.getTerm();
-        if (negated instanceof ElementOf) {
-            ElementOf elementOf = (ElementOf)negated;
-            MathObject set = elementOf.getSet();
-            MathObject complemented = (set instanceof SetComplement) ?
-                    ((SetComplement)set).getSet()
-                    : new SetComplement(set);
-
-            ElementOf elementOfComplement = new ElementOf(elementOf.getElement(), complemented);
-            Statement replaced = (Statement)replacer.substitute(originalStatement, negation, elementOfComplement);
-
-            inferences.add(new ProofStatement(replaced, "by the definition of set complement"));
-        }
-    }
-
-    @Override
     protected void handle(ElementOf elementOf) {
-        if (parent instanceof Negation)
-            return;
+        if (elementOf.isNegative()) {
+			MathObject set = elementOf.getSet();
+			MathObject complemented = (set instanceof SetComplement) ?
+					((SetComplement)set).getSet()
+					: new SetComplement(set);
 
-        MathObject set = elementOf.getSet();
-        MathObject complemented = (set instanceof SetComplement) ?
-                ((SetComplement)set).getSet()
-                : new SetComplement(set);
+			ElementOf elementOfComplement = new ElementOf(elementOf.getElement(), complemented);
+			Statement replaced = (Statement)replacer.substitute(originalStatement, elementOf, elementOfComplement);
 
-        Negation negation = new Negation(
-            new ElementOf(elementOf.getElement(), complemented)
-        );
-        Statement replaced = (Statement)replacer.substitute(originalStatement, elementOf, negation);
+			inferences.add(new ProofStatement(replaced, "by the definition of set complement"));
+		} else {
+			MathObject set = elementOf.getSet();
+			MathObject complemented = (set instanceof SetComplement) ?
+					((SetComplement) set).getSet()
+					: new SetComplement(set);
 
-        inferences.add(new ProofStatement(replaced, "by the definition of set complement"));
+			NotElementOf notElementOf = new NotElementOf(elementOf.getElement(), complemented);
+			Statement replaced = (Statement) replacer.substitute(originalStatement, elementOf, notElementOf);
+
+			inferences.add(new ProofStatement(replaced, "by the definition of set complement"));
+		}
     }
 
     private Statement originalStatement;

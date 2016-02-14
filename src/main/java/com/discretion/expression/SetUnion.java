@@ -4,7 +4,7 @@ import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
 import com.discretion.statement.Variable;
 
-public class SetUnion implements MathObject {
+public class SetUnion extends MathObject {
 
     public boolean equals(Object other) {
         if (!(other instanceof SetUnion))

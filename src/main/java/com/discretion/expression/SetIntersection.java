@@ -3,7 +3,7 @@ package com.discretion.expression;
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
 
-public class SetIntersection implements MathObject {
+public class SetIntersection extends MathObject {
 
     public boolean equals(Object other) {
         if (!(other instanceof SetIntersection))

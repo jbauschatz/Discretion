@@ -3,7 +3,7 @@ package com.discretion.statement;
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
 
-public class Negation implements Statement {
+public class Negation extends Statement {
 
     public boolean equals(Object other) {
         return other instanceof Negation
@@ -22,9 +22,23 @@ public class Negation implements Statement {
         visitor.visit(this);
     }
 
+	@Override
+	public MathObject negate() {
+		return term;
+	}
+
+	@Override
+	public boolean isNegative() {
+		return true;
+	}
+
     public Negation(MathObject term) {
         this.term = term;
     }
+
+	public Negation(String term) {
+		this.term = new Variable(term);
+	}
 
     public Negation() {
     }

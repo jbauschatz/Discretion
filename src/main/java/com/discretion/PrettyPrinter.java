@@ -38,7 +38,7 @@ public class PrettyPrinter implements MathObjectVisitor {
 
     public void visit(ElementOf elem) {
         elem.getElement().accept(this);
-        pretty += " ∈ ";
+        pretty += elem.isNegative() ? " ∉ " : " ∈ ";
         elem.getSet().accept(this);
     }
 
@@ -90,8 +90,8 @@ public class PrettyPrinter implements MathObjectVisitor {
     }
 
     public void visit(Negation negation) {
-        pretty += "¬";
-        parensIfNeeded(negation, negation.getTerm());
+		pretty += "¬";
+		parensIfNeeded(negation, negation.getTerm());
     }
 
 	public void visit(CartesianProduct product) {
@@ -126,7 +126,10 @@ public class PrettyPrinter implements MathObjectVisitor {
 
 		precedence.put(SetComplement.class, p++);
 
-		precedence.put(ElementOf.class, p++);
+		// Equal precedence for ElementOf and NotElementOf
+		precedence.put(ElementOf.class, p);
+		precedence.put(NotElementOf.class, p++);
+
 		precedence.put(SubsetOf.class, p++);
 		precedence.put(Negation.class, p++);
 		precedence.put(Variable.class, p);
@@ -153,4 +156,5 @@ public class PrettyPrinter implements MathObjectVisitor {
 	private String pretty;
 	private boolean useEnglish;
 	private HashMap<Class<?>, Integer> precedence;
+	private MathObject parent;
 }

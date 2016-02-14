@@ -3,7 +3,7 @@ package com.discretion.statement;
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
 
-public class Disjunction implements Statement {
+public class Disjunction extends Statement {
 
     public boolean equals(Object other) {
         if (!(other instanceof Disjunction))
@@ -36,6 +36,11 @@ public class Disjunction implements Statement {
         this.left = left;
         this.right = right;
     }
+
+	public Disjunction(String left, String right) {
+		this.left = new Variable(left);
+		this.right = new Variable(right);
+	}
 
     public Disjunction() {
     }

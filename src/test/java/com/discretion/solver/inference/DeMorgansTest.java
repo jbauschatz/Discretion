@@ -1,13 +1,9 @@
 package com.discretion.solver.inference;
 
-import com.discretion.statement.Variable;
+import com.discretion.statement.*;
 import com.discretion.proof.ProofStatement;
 import com.discretion.solver.environment.NestedTruthEnvironment;
 import com.discretion.solver.environment.TruthEnvironment;
-import com.discretion.statement.Conjunction;
-import com.discretion.statement.Disjunction;
-import com.discretion.statement.Negation;
-import com.discretion.statement.Statement;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,7 +44,37 @@ public class DeMorgansTest {
 		Statement expected = new Negation(new Disjunction(new Negation(new Variable("p")), new Negation(new Variable("q"))));
 		assertThat("(p and q) implies ~(~p or ~q)",
 				inferences.get(0).getStatement(),
-				equalToExpression(expected));
+				is(equalToExpression(expected)));
+	}
+
+	/**
+	 * Tests that terms are negated in the appropriate manner
+	 * - for example an ElementOf is negated into a NotElementOf
+	 *
+	 * Given:
+	 *      x ∈ A ∧ x ∉ B
+	 *
+	 * Infer:
+	 *     ¬(x ∉ A ∨ x ∈ B)
+	 */
+	@Test
+	public void testSpecialNegation() {
+		TruthEnvironment environment = new NestedTruthEnvironment(
+				new Conjunction(
+						new ElementOf("x", "A"),
+						new NotElementOf("x", "B")));
+		List<ProofStatement> inferences = deMorgan.getInferences(environment);
+
+		assertThat("Only one inference should be made", inferences.size(), is(1));
+
+		Statement expected = new Negation(
+				new Disjunction(
+						new NotElementOf("x", "A"),
+						new ElementOf("x", "B")));
+
+		assertThat("ElementOf should be negated as NotElementOf",
+				inferences.get(0).getStatement(),
+				is(equalToExpression(expected)));
 	}
 
 	/**
@@ -63,15 +89,15 @@ public class DeMorgansTest {
 	@Test
 	public void testInnerNegations() {
 		TruthEnvironment environment = new NestedTruthEnvironment(
-				new Conjunction(new Negation(new Variable("p")), new Negation(new Variable("q"))));
+				new Conjunction(new Negation("p"), new Negation("q")));
 		List<ProofStatement> inferences = deMorgan.getInferences(environment);
 
 		assertThat("Only one inference should be made", inferences.size(), is(1));
 
-		Statement expected = new Negation(new Disjunction(new Variable("p"), new Variable("q")));
+		Statement expected = new Negation(new Disjunction("p", "q"));
 		assertThat("(~p and ~q) implies ~(p or q)",
 				inferences.get(0).getStatement(),
-				equalToExpression(expected));
+				is(equalToExpression(expected)));
 	}
 
 	/**
@@ -86,15 +112,15 @@ public class DeMorgansTest {
 	@Test
 	public void testOuterNegation() {
 		TruthEnvironment environment = new NestedTruthEnvironment(
-				new Negation(new Conjunction(new Variable("p"), new Variable("q"))));
+				new Negation(new Conjunction("p", "q")));
 		List<ProofStatement> inferences = deMorgan.getInferences(environment);
 
 		assertThat("Only one inference should be made", inferences.size(), is(1));
 
-		Statement expected = new Disjunction(new Negation(new Variable("p")), new Negation(new Variable("q")));
+		Statement expected = new Disjunction(new Negation("p"), new Negation("q"));
 		assertThat("(~p and ~q) implies ~(p or q)",
 				inferences.get(0).getStatement(),
-				equalToExpression(expected));
+				is(equalToExpression(expected)));
 	}
 
 	private DeMorgansLaw deMorgan;
