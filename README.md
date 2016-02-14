@@ -24,13 +24,13 @@ Therefore ~(A ∪ B) ⊆ ~A ∩ ~B by the definition of subset, QED.
 
 ## Running the project
 
-To generate solutions to the homework problems, run:
+To solve a problem run:
 
 ```
-gradle run
+gradle run -q -Pargs "-problem 4.2.4 -style indent"
 ```
 
-This will generate solution files for each problem set, for each solving strategy.
+This will solve problem 4.2.4 and output it using the "indented" style of output. All problems are defined in ProblemFactory.java, and currently implemented problems are 4.2.{1-8} and 4.3.{1-19}.
 
 To run the JUnit tests, run:
 
