@@ -12,9 +12,15 @@ public class IndentedProofPrinter implements ProofItemVisitor, ProofPrettyPrinte
         indentLevel = 0;
         subProofsThisLevel = 0;
 
+		// Title and problem overview
 		if (proof.getTitle() != null)
 			indent(proof.getTitle());
+		indent("Given: " + printer.commaList(proof.getSuppositions()));
+		indent("Prove: " + printer.prettyString(proof.getConclusion().getStatement()));
+		outputStream.println();
 
+		// Solution
+		indent("Proof:");
         if (!proof.getSuppositions().isEmpty())
 			indent("Suppose " + printer.commaList(proof.getSuppositions()) + ".");
 

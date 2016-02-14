@@ -37,11 +37,23 @@ public class ParagraphProofPrinter implements ProofItemVisitor, ProofPrettyPrint
 
 		// Title
 		if (proof.getTitle() != null)
-			outputStream.println(proof.getTitle());
+			outputStream.print(proof.getTitle());
 
+		if (!proof.getSuppositions().isEmpty()) {
+			outputStream.print(" If ");
+			outputStream.print(printer.commaList(proof.getSuppositions()));
+			outputStream.print(" then ");
+			outputStream.print(printer.prettyString(proof.getConclusion().getStatement()));
+			outputStream.print(".");
+		}
+		outputStream.println();
+		outputStream.println();
+
+		outputStream.print("Proof. ");
 		// Suppositions
 		if (!proof.getSuppositions().isEmpty()) {
 			printParagraph("Suppose " + printer.commaList(proof.getSuppositions()) + ". ", outputStream, paragraphWidth);
+			outputStream.println();
 			outputStream.println();
 		}
 

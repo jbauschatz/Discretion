@@ -58,7 +58,6 @@ public class SolveHomework {
 		try {
 			PrintStream outputStream = new PrintStream(solutionFile);
 			printer.prettyPrint(proof, outputStream);
-			outputStream.println();
         } catch (IOException e) {
             e.printStackTrace();
         }

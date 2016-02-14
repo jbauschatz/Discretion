@@ -85,6 +85,10 @@ Indented output looks much like a computer program:
 
 ```
 4.2.4
+Given: A ⊆ U and B ⊆ U
+Prove: ~(A ∪ B) ⊆ ~A ∩ ~B
+
+Proof:
 Suppose A ⊆ U and B ⊆ U.
 Further suppose x ∈ ~(A ∪ B).
   ¬(x ∈ A ∪ B) by the definition of set complement.
@@ -99,8 +103,10 @@ Therefore ~(A ∪ B) ⊆ ~A ∩ ~B by the definition of subset, QED.
 Paragraph style aims for a more "plain english" reading, and mimics the style presented in *Discrete Mathematics and Functional Programming*:
 
 ```
-4.2.4
-Suppose A ⊆ U and B ⊆ U.
+4.2.4 If A ⊆ U and B ⊆ U then ~(A ∪ B) ⊆ ~A ∩ ~B.
+
+Proof. Suppose A ⊆ U and B ⊆ U.
+
 Further suppose x ∈ ~(A ∪ B). By the definition of set complement, ¬(x ∈
 A ∪ B). By the definition of union, ¬(x ∈ A or x ∈ B). By DeMorgan's
 Law, ¬(x ∈ A) and ¬(x ∈ B). By the definition of set complement, x ∈ ~A
