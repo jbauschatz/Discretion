@@ -61,7 +61,7 @@ public class BestEffortInferenceChain implements InferenceChainProducer {
 		inferenceRules.add(new DoubleNegative());
 		inferenceRules.add(new DeMorgansLaw());
 		inferenceRules.add(new Specialization());
-		inferenceRules.add(new AssociateDisjunction());
+		inferenceRules.add(new AssociativeDisjunction());
 
 		// set theory specific
 		inferenceRules.add(new ElementOfSuperset());

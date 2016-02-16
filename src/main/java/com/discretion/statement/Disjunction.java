@@ -37,6 +37,11 @@ public class Disjunction implements Statement {
         this.right = right;
     }
 
+	public Disjunction(String left, String right) {
+		this.left = new Variable(left);
+		this.right = new Variable(right);
+	}
+
     public Disjunction() {
     }
 

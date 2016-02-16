@@ -10,7 +10,7 @@ import com.discretion.statement.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AssociateDisjunction extends AbstractMathObjectVisitor implements InferenceRule {
+public class AssociativeDisjunction extends AbstractMathObjectVisitor implements InferenceRule {
     @Override
     public List<ProofStatement> getInferences(TruthEnvironment environment) {
         inferences = new LinkedList<>();
@@ -24,7 +24,7 @@ public class AssociateDisjunction extends AbstractMathObjectVisitor implements I
         return inferences;
     }
 
-    public AssociateDisjunction() {
+    public AssociativeDisjunction() {
         replacer = new Replacer();
     }
 
