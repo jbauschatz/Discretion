@@ -29,7 +29,7 @@ public class AssociativeConjunction extends AbstractMathObjectVisitor implements
     }
 
     @Override
-    protected void handle(Conjunction disjunction) {
+    protected void handle(Conjunction conjunction) {
 		// TODO identify an object of the form (P ∧ Q) ∧ R and infer P ∧ (Q ∧ R)
 
 		// TODO identify an object of the form P ∧ (Q ∧ R) and infer (P ∧ Q) ∧ R
