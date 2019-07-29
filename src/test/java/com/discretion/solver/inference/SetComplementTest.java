@@ -1,5 +1,6 @@
 package com.discretion.solver.inference;
 
+import com.discretion.statement.NotElementOf;
 import com.discretion.statement.Variable;
 import com.discretion.expression.SetComplement;
 import com.discretion.proof.ProofStatement;
@@ -28,7 +29,7 @@ public class SetComplementTest {
 	 *      x ∈ X
 	 *
 	 * Infer:
-	 *      ¬(x ∈ ~X)
+	 *      x ∉ ~X
 	 */
 	@Test
 	public void testInSet() {
@@ -40,13 +41,13 @@ public class SetComplementTest {
 		assertThat("(x in X) implies (x not in ~X)",
 				inferences.get(0).getStatement(),
 				is(equalToExpression(
-						new Negation(new ElementOf(new Variable("x"), new SetComplement("X"))))
-				));
+						new NotElementOf(new Variable("x"), new SetComplement("X"))
+				)));
 	}
 
 	/**
 	 * Given:
-	 *      ¬(x ∈ X)
+	 *      x ∉ X
 	 *
 	 * Infer:
 	 *      x ∈ ~X
@@ -54,7 +55,7 @@ public class SetComplementTest {
 	@Test
 	public void testNotInSet() {
 		TruthEnvironment environment = new NestedTruthEnvironment(
-				new Negation(new ElementOf("x", "X")));
+				new NotElementOf("x", "X"));
 		List<ProofStatement> inferences = complement.getInferences(environment);
 
 		assertThat("Only one inference should be made", inferences.size(), is(1));
@@ -70,7 +71,7 @@ public class SetComplementTest {
 	 *      x ∈ ~X
 	 *
 	 * Infer:
-	 *      ¬(x ∈ X)
+	 *      x ∉ X
 	 */
 	@Test
 	public void testInComplement() {
@@ -81,14 +82,12 @@ public class SetComplementTest {
 		assertThat("Only one inference should be made", inferences.size(), is(1));
 		assertThat("(x in ~X) implies (x not in X)",
 				inferences.get(0).getStatement(),
-				is(equalToExpression(
-						new Negation(new ElementOf("x", "X")))
-				));
+				is(equalToExpression(new NotElementOf("x", "X"))));
 	}
 
 	/**
 	 * Given:
-	 *      ¬(x ∈ ~X)
+	 *      x ∉ ~X
 	 *
 	 * Infer:
 	 *      x ∈ X
@@ -96,7 +95,7 @@ public class SetComplementTest {
 	@Test
 	public void testNotInComplement() {
 		TruthEnvironment environment = new NestedTruthEnvironment(
-				new Negation(new ElementOf(new Variable("x"), new SetComplement("X"))));
+				new NotElementOf(new Variable("x"), new SetComplement("X")));
 		List<ProofStatement> inferences = complement.getInferences(environment);
 
 		assertThat("Only one inference should be made", inferences.size(), is(1));

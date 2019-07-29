@@ -7,5 +7,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         use = JsonTypeInfo.Id.MINIMAL_CLASS,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type")
-public interface Statement extends MathObject {
+public abstract class Statement extends MathObject {
 }

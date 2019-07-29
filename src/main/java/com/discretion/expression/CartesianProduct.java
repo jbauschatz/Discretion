@@ -5,7 +5,7 @@ import com.discretion.MathObjectVisitor;
 
 import java.util.Arrays;
 
-public class CartesianProduct implements MathObject {
+public class CartesianProduct extends MathObject {
 
 	public void accept(MathObjectVisitor visitor) {
 		visitor.visit(this);

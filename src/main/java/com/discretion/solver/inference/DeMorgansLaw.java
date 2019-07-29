@@ -38,8 +38,8 @@ public class DeMorgansLaw extends AbstractMathObjectVisitor implements Inference
 
         Statement notDisjunction = new Negation(
                 new Disjunction(
-                        negate(conjunction.getLeft()),
-                        negate(conjunction.getRight())
+                        conjunction.getLeft().negate(),
+                        conjunction.getRight().negate()
                 )
         );
         Statement replaced = (Statement)replacer.substitute(originalStatement, conjunction, notDisjunction);
@@ -53,8 +53,8 @@ public class DeMorgansLaw extends AbstractMathObjectVisitor implements Inference
 
         Statement notConjunction = new Negation(
                 new Conjunction(
-                        negate(disjunction.getLeft()),
-                        negate(disjunction.getRight())
+                        disjunction.getLeft().negate(),
+                        disjunction.getRight().negate()
                 )
         );
         Statement replaced = (Statement)replacer.substitute(originalStatement, disjunction, notConjunction);
@@ -65,24 +65,17 @@ public class DeMorgansLaw extends AbstractMathObjectVisitor implements Inference
     protected void handle(Negation negation) {
         if (negation.getTerm() instanceof Disjunction) {
             Disjunction disjunction = (Disjunction)negation.getTerm();
-            Conjunction conjunction = new Conjunction(negate(disjunction.getLeft()), negate(disjunction.getRight()));
+            Conjunction conjunction = new Conjunction(disjunction.getLeft().negate(), disjunction.getRight().negate());
             Statement replaced = (Statement)replacer.substitute(originalStatement, negation, conjunction);
             inferences.add(new ProofStatement(replaced, "by DeMorgan's Law"));
         }
 
         if (negation.getTerm() instanceof Conjunction) {
             Conjunction conjunction = (Conjunction)negation.getTerm();
-            Disjunction disjunction = new Disjunction(negate(conjunction.getLeft()), negate(conjunction.getRight()));
+            Disjunction disjunction = new Disjunction(conjunction.getLeft().negate(), conjunction.getRight().negate());
             Statement replaced = (Statement)replacer.substitute(originalStatement, negation, disjunction);
             inferences.add(new ProofStatement(replaced, "by DeMorgan's Law"));
         }
-    }
-
-    private MathObject negate(MathObject object) {
-        if (object instanceof Negation)
-            return ((Negation)object).getTerm();
-
-        return new Negation(object);
     }
 
     private Statement originalStatement;

@@ -3,13 +3,15 @@ package com.discretion.statement;
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
 
-public class ElementOf implements Statement {
+public class ElementOf extends Statement {
 
     public boolean equals(Object other) {
         if (!(other instanceof ElementOf))
             return false;
         ElementOf otherElement = (ElementOf)other;
-        return element.equals(otherElement.element) && set.equals(otherElement.set);
+        return element.equals(otherElement.element)
+				&& set.equals(otherElement.set)
+				&& isNegative() == otherElement.isNegative();
     }
 
     public MathObject getElement() {
@@ -32,6 +34,11 @@ public class ElementOf implements Statement {
         visitor.visit(this);
     }
 
+	@Override
+	public MathObject negate() {
+		return new NotElementOf(element, set);
+	}
+
     public ElementOf(MathObject element, MathObject set) {
         this.element = element;
         this.set = set;
@@ -45,6 +52,6 @@ public class ElementOf implements Statement {
     public ElementOf() {
     }
 
-    private MathObject element;
-    private MathObject set;
+    protected MathObject element;
+    protected MathObject set;
 }

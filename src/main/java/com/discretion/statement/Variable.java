@@ -3,7 +3,7 @@ package com.discretion.statement;
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
 
-public class Variable implements Statement {
+public class Variable extends Statement {
 
     public boolean equals(Object other) {
         return other instanceof Variable && ((Variable)other).name.equals(name);

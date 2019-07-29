@@ -4,7 +4,7 @@ import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
 import com.discretion.statement.Variable;
 
-public class SetComplement implements MathObject {
+public class SetComplement extends MathObject {
 
     public boolean equals(Object other) {
         if (!(other instanceof SetComplement))

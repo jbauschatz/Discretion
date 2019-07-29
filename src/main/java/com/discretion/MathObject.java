@@ -1,5 +1,6 @@
 package com.discretion;
 
+import com.discretion.statement.Negation;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
@@ -11,6 +12,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         use = JsonTypeInfo.Id.MINIMAL_CLASS,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type")
-public interface MathObject {
-    void accept(MathObjectVisitor visitor);
+public abstract class MathObject {
+    public abstract void accept(MathObjectVisitor visitor);
+
+	public MathObject negate() {
+		return new Negation(this);
+	}
+
+	public boolean isNegative() {
+		return false;
+	}
 }

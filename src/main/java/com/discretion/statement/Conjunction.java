@@ -3,7 +3,7 @@ package com.discretion.statement;
 import com.discretion.MathObject;
 import com.discretion.MathObjectVisitor;
 
-public class Conjunction implements Statement {
+public class Conjunction extends Statement {
 
     public boolean equals(Object other) {
         if (!(other instanceof Conjunction))

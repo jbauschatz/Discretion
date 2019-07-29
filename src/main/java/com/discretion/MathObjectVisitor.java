@@ -5,7 +5,7 @@ import com.discretion.statement.*;
 
 public interface MathObjectVisitor {
     void visit(Variable variable);
-    void visit(ElementOf elem);
+	void visit(ElementOf elem);
     void visit(Equality equality);
     void visit(SubsetOf subset);
     void visit(SetUnion union);

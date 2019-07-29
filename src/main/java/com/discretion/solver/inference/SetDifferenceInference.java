@@ -6,10 +6,7 @@ import com.discretion.expression.SetDifference;
 import com.discretion.proof.ProofStatement;
 import com.discretion.solver.Replacer;
 import com.discretion.solver.environment.TruthEnvironment;
-import com.discretion.statement.Conjunction;
-import com.discretion.statement.ElementOf;
-import com.discretion.statement.Negation;
-import com.discretion.statement.Statement;
+import com.discretion.statement.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,35 +31,44 @@ public class SetDifferenceInference extends AbstractMathObjectVisitor implements
 
     @Override
     protected void handle(Conjunction conjunction) {
-		// Case 1: a in A and a not in B -> a in A-B
-		if (conjunction.getLeft() instanceof ElementOf && conjunction.getRight() instanceof Negation) {
+		// Case 1: x ∈ A ∧ x ∉ B  ->  x ∈ A - B
+		if (conjunction.getLeft() instanceof ElementOf
+				&& conjunction.getRight() instanceof NotElementOf) {
 			ElementOf leftSide = (ElementOf)conjunction.getLeft();
-			Negation rightSide = (Negation)conjunction.getRight();
+			NotElementOf rightSide = (NotElementOf)conjunction.getRight();
 
-			if (rightSide.getTerm() instanceof ElementOf) {
-				ElementOf rightElementOf = (ElementOf)rightSide.getTerm();
-				if (rightElementOf.getElement().equals(leftSide.getElement())) {
-					ElementOf elementOfDifference = new ElementOf(leftSide.getElement(),
-							new SetDifference(leftSide.getSet(), rightElementOf.getSet()));
-					Statement replaced = (Statement)replacer.substitute(originalStatement, conjunction, elementOfDifference);
-					inferences.add(new ProofStatement(replaced, "by the definition of set difference"));
-				}
+			if (leftSide.getElement().equals(rightSide.getElement())) {
+				ElementOf elementOfDifference = new ElementOf(leftSide.getElement(),
+						new SetDifference(leftSide.getSet(), rightSide.getSet()));
+				Statement replaced = (Statement)replacer.substitute(originalStatement, conjunction, elementOfDifference);
+				inferences.add(new ProofStatement(replaced, "by the definition of set difference"));
 			}
 		}
 
-		// TODO Case 2: a not in A and a in B -> a in B-A
+		// TODO Case 2: x ∉ A ∧ x ∈ B  ->  x ∈ B - A
     }
 
     @Override
     protected void handle(ElementOf elementOf) {
         MathObject set = elementOf.getSet();
         if (set instanceof SetDifference) {
-            SetDifference diff = (SetDifference)set;
-            ElementOf left = new ElementOf(elementOf.getElement(), diff.getLeft());
-            Negation right = new Negation(new ElementOf(elementOf.getElement(), diff.getRight()));
-            Conjunction conj = new Conjunction(left, right);
-            Statement replaced = (Statement)replacer.substitute(originalStatement, elementOf, conj);
-            inferences.add(new ProofStatement(replaced, "by the definition of set difference"));
+			SetDifference diff = (SetDifference) set;
+
+			if (elementOf.isNegative()) {
+				// x ∉ A - B -> ¬(x ∈ A ∧ x ∉ B)
+				ElementOf left = new ElementOf(elementOf.getElement(), diff.getLeft());
+				NotElementOf right = new NotElementOf(elementOf.getElement(), diff.getRight());
+				Negation notConjunction = new Negation(new Conjunction(left, right));
+				Statement replaced = (Statement) replacer.substitute(originalStatement, elementOf, notConjunction);
+				inferences.add(new ProofStatement(replaced, "by the definition of set difference"));
+			} else {
+				// x ∈ A - B -> x ∈ A ∧ x ∉ B
+				ElementOf left = new ElementOf(elementOf.getElement(), diff.getLeft());
+				NotElementOf right = new NotElementOf(elementOf.getElement(), diff.getRight());
+				Conjunction conj = new Conjunction(left, right);
+				Statement replaced = (Statement) replacer.substitute(originalStatement, elementOf, conj);
+				inferences.add(new ProofStatement(replaced, "by the definition of set difference"));
+			}
         }
     }
 

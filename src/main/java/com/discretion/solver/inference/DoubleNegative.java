@@ -33,8 +33,8 @@ public class DoubleNegative extends AbstractMathObjectVisitor implements Inferen
     @Override
     protected void handle(Negation negation) {
 		// TODO make sure that a triple negative doesn't produce a duplicate inference
-		if (negation.getTerm() instanceof Negation) {
-			Statement term = (Statement) ((Negation)negation.getTerm()).getTerm();
+		if (negation.getTerm().isNegative()) {
+			Statement term = (Statement) negation.getTerm().negate();
 			Statement simplified = (Statement)replacer.substitute(originalStatement, negation, term);
 			inferences.add(new ProofStatement(simplified, "by double negative"));
 		}

@@ -14,15 +14,15 @@ public class AbstractMathObjectVisitor implements MathObjectVisitor {
         handle(variable);
     }
 
-    public final void visit(ElementOf elem) {
-        handle(elem);
+	public final void visit(ElementOf elem) {
+		handle(elem);
 
-        parent = elem;
-        elem.getElement().accept(this);
+		parent = elem;
+		elem.getElement().accept(this);
 
-        parent = elem;
-        elem.getSet().accept(this);
-    }
+		parent = elem;
+		elem.getSet().accept(this);
+	}
 
     public final void visit(Equality equality) {
         handle(equality);
